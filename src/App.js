@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/Login/Login";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
+import Listing from "./components/Listing/Listing.jsx";
+import ViewListing from "./components/Listing/ViewListing.jsx";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
             <Route path="/reset_pw" element={<ResetPassword />} />
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Enterprise />} />
+            <Route path="/listing" element={<Listing />} />
+            <Route path="/view_listing" element={<ViewListing />} />
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>

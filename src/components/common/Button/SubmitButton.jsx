@@ -1,19 +1,19 @@
 import React from "react";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import styled from "styled-components";
 
 export const SubmitButton = (onClickEvent) => {
-    return (
-        <StyledSubmitButton variant="success" onClick={onClickEvent}>Submit</StyledSubmitButton>
-
-    )
-
-}
+  return (
+    <StyledSubmitButton variant="success" onClick={onClickEvent}>
+      Submit
+    </StyledSubmitButton>
+  );
+};
 
 const StyledSubmitButton = styled(Button)`
-    font-family: 'Josefin Sans', sans-serif;
-    border-width:0px;
-    color:#ffff;
+  font-family: "Nunito", sans-serif;
+  border-width: 0px;
+  color: #ffff;
 `;
 
 // const StyledSubmitButton = styled(Button)`

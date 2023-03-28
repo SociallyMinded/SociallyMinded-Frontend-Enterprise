@@ -128,11 +128,14 @@ const GoogleButton = styled(Button)`
   height: 35px;
   margin-top: 4%;
   background: white;
+  color: black;
   font-family: Nunito;
   border: 1px solid #c9c9c9;
   border-radius: 5px;
   &:hover {
     background-color: #ededed;
+    border: 1px solid #c9c9c9;
+    color: black;
   }
 `;
 
