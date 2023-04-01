@@ -38,8 +38,8 @@ const Listing = () => {
     handleProductPrice,
     productDescription,
     handleProductDescription,
-    imageLink,
-    handleImageLink,
+    productCategory,
+    handleProductCategory,
     handleFileChange,
     editProductName,
     handleEditProductName,
@@ -47,8 +47,8 @@ const Listing = () => {
     handleEditProductPrice,
     editProductDescription,
     handleEditProductDescription,
-    editImageLink,
-    handleEditImageLink,
+    editProductCategory,
+    handleEditProductCategory,
     showConfirmEditModal,
     handleCloseConfirmEditModal,
     handleShowConfirmEditModal,
@@ -71,6 +71,9 @@ const Listing = () => {
       </ProductListingHeaderContainer>
       <ProductListingPage>
         <ProductListingContainer>
+          {data != null && data.length == 0 && (
+            <h5>There are no products yet.</h5>
+          )}
           {data != null &&
             data.map((data) => (
               <ProductListingImgContainer>
@@ -141,6 +144,7 @@ const Listing = () => {
                 <Form.Control
                   type="text"
                   autoFocus
+                  maxLength="25"
                   value={productName}
                   onChange={handleProductName}
                 />
@@ -187,6 +191,20 @@ const Listing = () => {
                 />
               </Form.Group>
             </Form>
+            <Form>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>Category</Form.Label>
+                <Form.Select className="ml-3" onChange={handleProductCategory}>
+                  <option value="Craft">Craft</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Food">Food</option>
+                  <option value="Others">Others</option>
+                </Form.Select>
+              </Form.Group>
+            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={createNewProduct}>
@@ -219,6 +237,7 @@ const Listing = () => {
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
+                  maxLength="25"
                   autoFocus
                   placeholder={productSelected != null && productSelected.name}
                   value={editProductName}
@@ -269,6 +288,24 @@ const Listing = () => {
                   type="file"
                   onChange={handleFileChange}
                 />
+              </Form.Group>
+            </Form>
+            <Form>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>Category</Form.Label>
+                <Form.Select
+                  className="ml-3"
+                  onChange={(e) => handleEditProductCategory(e.target.value)}
+                  placeholder="Select Category"
+                >
+                  <option value="Craft">Craft</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Food">Food</option>
+                  <option value="Others">Others</option>
+                </Form.Select>
               </Form.Group>
             </Form>
           </ModalBody>
@@ -333,6 +370,17 @@ const Listing = () => {
                 >
                   <Form.Label>Image</Form.Label>
                   <Form.Control type="text" value={editFile} disabled />
+                </Form.Group>
+              </Form>
+              <Form>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label>Category</Form.Label>
+                  <Form.Select className="ml-3" disabled>
+                    <option>{editProductCategory}</option>
+                  </Form.Select>
                 </Form.Group>
               </Form>
             </Modal.Body>
@@ -417,7 +465,7 @@ const ProductListingImgContainer = styled.div`
   margin-bottom: 3vh;
   margin-left: 1.4vw;
   margin-right: 1.4vw;
-  justify-content: ;
+  align-items: center;
 `;
 
 const ProductListingImg = styled.img`

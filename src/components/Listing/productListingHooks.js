@@ -42,6 +42,9 @@ const useProductListingHooks = () => {
   const handleEditProductDescription = (desc) =>
     setEditProductDescription(desc);
   const [editFile, setEditFile] = useState("");
+  const [editProductCategory, setEditProductCategory] = useState("");
+  const handleEditProductCategory = (category) =>
+    setEditProductCategory(category);
 
   const [productPrice, setProductPrice] = useState("");
   const handleProductPrice = (e) => setProductPrice(e.target.value);
@@ -49,8 +52,8 @@ const useProductListingHooks = () => {
   const handleProductName = (e) => setProductName(e.target.value);
   const [productDescription, setProductDescription] = useState("");
   const handleProductDescription = (e) => setProductDescription(e.target.value);
-  const [imageLink, setImageLink] = useState("");
-  const handleImageLink = (e) => setImageLink(e.target.value);
+  const [productCategory, setProductCategory] = useState("");
+  const handleProductCategory = (e) => setProductCategory(e.target.value);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const handleFileChange = (e) => {
     const files = e.target.files;
@@ -148,6 +151,7 @@ const useProductListingHooks = () => {
             price: productPrice,
             description: productDescription,
             imageLink: imageBase64s,
+            category: productCategory,
           },
         };
         axios
@@ -165,6 +169,7 @@ const useProductListingHooks = () => {
       setProductPrice("");
       setProductDescription("");
       setSelectedFiles([]);
+      setProductCategory("");
     } else {
       setShowAddProductModal(false);
     }
@@ -191,6 +196,7 @@ const useProductListingHooks = () => {
             price: editProductPrice,
             description: editProductDescription,
             imageLink: imageBase64s,
+            category: editProductCategory,
             productId: productSelected.productId,
           },
         };
@@ -209,6 +215,7 @@ const useProductListingHooks = () => {
       setEditProductPrice("");
       setEditProductDescription("");
       setSelectedFiles([]);
+      setEditProductCategory("");
     } else {
       setShowConfirmEditModal(false);
     }
@@ -283,8 +290,8 @@ const useProductListingHooks = () => {
     handleProductPrice,
     productDescription,
     handleProductDescription,
-    imageLink,
-    handleImageLink,
+    productCategory,
+    handleProductCategory,
     handleFileChange,
     editProductName,
     handleEditProductName,
@@ -292,6 +299,8 @@ const useProductListingHooks = () => {
     handleEditProductPrice,
     editProductDescription,
     handleEditProductDescription,
+    editProductCategory,
+    handleEditProductCategory,
     showConfirmEditModal,
     handleCloseConfirmEditModal,
     handleShowConfirmEditModal,

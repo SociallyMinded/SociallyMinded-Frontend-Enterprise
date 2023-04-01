@@ -4,13 +4,13 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
- export const firebaseConfig = {
-  apiKey: "AIzaSyCGVoDy7X4ri4vnVX49-YPU5zJ3gDkZjcc",
-  authDomain: "sociallyminded-ad014.firebaseapp.com",
-  projectId: "sociallyminded-ad014",
-  storageBucket: "sociallyminded-ad014.appspot.com",
-  messagingSenderId: "997497992168",
-  appId: "1:997497992168:web:eeb2b8e42582e614fcea5d"
+export const firebaseConfig = {
+  apiKey: "AIzaSyDRB-i6NGjrF2QmWe5Jtd8UvVSEDSoYUUk",
+  authDomain: "sociallyminded-enterprise.firebaseapp.com",
+  projectId: "sociallyminded-enterprise",
+  storageBucket: "sociallyminded-enterprise.appspot.com",
+  messagingSenderId: "252072668516",
+  appId: "1:252072668516:web:0f8fdf48fa4771ba22de71",
 };
 
 // Initialize Firebase
