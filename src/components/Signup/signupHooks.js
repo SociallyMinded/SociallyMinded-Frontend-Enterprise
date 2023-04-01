@@ -61,6 +61,7 @@ const useSignupHooks = () => {
           const user = result.user;
           const newRecord = newEnterpriseRecord(
             user.displayName,
+            user.displayName,
             user.email,
             user.uid
           );

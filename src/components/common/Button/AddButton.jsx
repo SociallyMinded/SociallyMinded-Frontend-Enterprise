@@ -2,10 +2,10 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import styled from "styled-components";
 
-export const EditButton = (onClickEvent) => {
+export const AddButton = (onClickEvent) => {
   return (
     <StyledEditButton variant="primary" onClick={onClickEvent}>
-      Make Edits
+      Add
     </StyledEditButton>
   );
 };
