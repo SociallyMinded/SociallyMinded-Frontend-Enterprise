@@ -1,0 +1,18 @@
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-toggle:hover {
+  background-color: #c9c9c9;
+  color: black;
+}
+
+.dropdown-toggle {
+  background-color: transparent;
+  color: black;
+  border: none;
+}
+
+.dropdown-toggle:focus {
+  background-color: #c9c9c9;
+}

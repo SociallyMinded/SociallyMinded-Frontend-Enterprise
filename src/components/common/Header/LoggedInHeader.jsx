@@ -2,7 +2,11 @@ import React from "react";
 import SiteLogo from "../SiteLogo/SiteLogo";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { DASHBOARD_LINK, HOME_LINK } from "../../../routes/routes";
+import {
+  HOME_LINK,
+  LISTING_LINK,
+  DASHBOARD_LINK,
+} from "../../../routes/routes";
 
 const LoggedInHeader = () => {
   return (
@@ -11,9 +15,9 @@ const LoggedInHeader = () => {
       <HeaderSiteLinks>
         <HeaderLink to={DASHBOARD_LINK}>Dashboard</HeaderLink>
         <HeaderLink>Data</HeaderLink>
-        <HeaderLink>Listings</HeaderLink>
+        <HeaderLink to={LISTING_LINK}>Listings</HeaderLink>
         <HeaderLink>Storefront</HeaderLink>
-        <HeaderLink to={HOME_LINK}>Log Out</HeaderLink>
+        <HeaderLink to={HOME_LINK}>Logout</HeaderLink>
       </HeaderSiteLinks>
     </HeaderLinkContainer>
   );
@@ -22,17 +26,18 @@ const LoggedInHeader = () => {
 const HeaderLinkContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `;
 
 const HeaderSiteLinks = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 35%;
+  margin-left: 40%;
   margin-top: 0.5em;
   width: 100%;
 `;
 const HeaderLink = styled(Link)`
-  margin-right: 10%;
+  margin-left: 10%;
   font-size: 1.1em;
   text-decoration: none;
   color: black;
@@ -40,6 +45,7 @@ const HeaderLink = styled(Link)`
 
   &:hover {
     color: #2d4696;
+    text-decoration: none;
   }
 
   &::before {
