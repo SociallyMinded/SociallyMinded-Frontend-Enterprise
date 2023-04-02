@@ -88,6 +88,10 @@ const useProductListingHooks = () => {
     setCurrentProductSelected(product);
     console.log(product);
     if (action == Actions.UPDATE) {
+      setEditProductName(product.name);
+      setEditProductPrice(product.price);
+      setEditProductDescription(product.description);
+      setEditProductCategory(product.category);
       setShowEditProductModal(true);
     } else if (action == Actions.DELETE) {
       setShowConfirmDeleteModal(true);
