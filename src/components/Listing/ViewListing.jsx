@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import LoggedInHeader from "../common/Header/LoggedInHeader";
 import { useLocation, useNavigate } from "react-router";
 import useProductReviewHooks from "./productReviewHooks";
+import { Badge } from "react-bootstrap";
 
 const ViewListing = () => {
   const { user } = UserAuth();
@@ -50,7 +51,13 @@ const ViewListing = () => {
           <ProductDescriptionSection>
             <ProductDescriptionContainer>
               <ProductDescriptionTitleContainer>
-                <StyledName>{location.state.product.name} </StyledName> <br />
+                <StyledName>{location.state.product.name} </StyledName>
+                <h5>
+                  <Badge bg="secondary" text="light">
+                    {" "}
+                    {location.state.product.category}{" "}
+                  </Badge>
+                </h5>
               </ProductDescriptionTitleContainer>
               <ProductDescriptionDetailContainer>
                 <h4>Price</h4>
@@ -92,7 +99,11 @@ const ViewListing = () => {
               <AvatarImg src={require(`./avatar.png`)}></AvatarImg>
               <ReviewDescription>
                 <p>
-                  <strong>Customer XXX </strong>
+                  <strong>
+                    {review.isAnonymous == true
+                      ? "Anonymous"
+                      : review.customer.username}
+                  </strong>
                   <br />
                   <i>
                     Posted on:{" "}
@@ -100,6 +111,7 @@ const ViewListing = () => {
                       review.dateOfReview.split("T")[0]}
                   </i>
                 </p>
+                <p>Rating: {review.rating}</p>
                 <p>{review.reviewDescription}</p>
               </ReviewDescription>
             </EachReviewContainer>
