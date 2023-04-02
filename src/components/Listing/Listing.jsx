@@ -239,7 +239,6 @@ const Listing = () => {
                   type="text"
                   maxLength="25"
                   autoFocus
-                  placeholder={productSelected != null && productSelected.name}
                   value={editProductName}
                   onChange={(e) => handleEditProductName(e.target.value)}
                 />
@@ -253,7 +252,6 @@ const Listing = () => {
                 <Form.Label>Price</Form.Label>
                 <Form.Control
                   type="number"
-                  placeholder={productSelected != null && productSelected.price}
                   value={editProductPrice}
                   onChange={(e) => handleEditProductPrice(e.target.value)}
                 />
@@ -268,9 +266,6 @@ const Listing = () => {
                 <Form.Control
                   as="textarea"
                   rows={4}
-                  placeholder={
-                    productSelected != null && productSelected.description
-                  }
                   value={editProductDescription}
                   onChange={(e) => handleEditProductDescription(e.target.value)}
                 />
@@ -299,7 +294,7 @@ const Listing = () => {
                 <Form.Select
                   className="ml-3"
                   onChange={(e) => handleEditProductCategory(e.target.value)}
-                  placeholder="Select Category"
+                  defaultValue={editProductCategory}
                 >
                   <option value="Craft">Craft</option>
                   <option value="Clothing">Clothing</option>
