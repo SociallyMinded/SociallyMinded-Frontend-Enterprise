@@ -56,7 +56,18 @@ const Listing = () => {
     showConfirmDeleteModal,
     handleCloseConfirmDeleteModal,
     editFile,
-  } = useProductListingHooks(user);
+  } = useProductListingHooks();
+
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    setValidated(true);
+  };
 
   return (
     <PageTemplate>
@@ -135,7 +146,7 @@ const Listing = () => {
             </button>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
@@ -144,10 +155,14 @@ const Listing = () => {
                 <Form.Control
                   type="text"
                   autoFocus
+                  required
                   maxLength="25"
                   value={productName}
                   onChange={handleProductName}
                 />
+                <Form.Control.Feedback type="invalid">
+                  A name is required.
+                </Form.Control.Feedback>
               </Form.Group>
             </Form>
             <Form>
@@ -158,9 +173,13 @@ const Listing = () => {
                 <Form.Label>Price</Form.Label>
                 <Form.Control
                   type="number"
+                  required
                   value={productPrice}
                   onChange={handleProductPrice}
                 />
+                <Form.Control.Feedback type="invalid">
+                  A price is required.
+                </Form.Control.Feedback>
               </Form.Group>
             </Form>
             <Form>
@@ -172,9 +191,13 @@ const Listing = () => {
                 <Form.Control
                   as="textarea"
                   rows={4}
+                  required
                   value={productDescription}
                   onChange={handleProductDescription}
                 />
+                <Form.Control.Feedback type="invalid">
+                  A description is required.
+                </Form.Control.Feedback>
               </Form.Group>
             </Form>
             <Form>
@@ -187,6 +210,7 @@ const Listing = () => {
                   className="ml-3"
                   id="uploadImage"
                   type="file"
+                  required
                   onChange={handleFileChange}
                 />
               </Form.Group>
@@ -207,7 +231,7 @@ const Listing = () => {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={createNewProduct}>
+            <Button type="submit" variant="primary" onClick={createNewProduct}>
               Add
             </Button>
           </Modal.Footer>

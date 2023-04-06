@@ -84,12 +84,14 @@ const ViewListing = () => {
         </ProductContainer>
       </ProductPage>
 
-      <ReviewContainer>
+      <ReviewTitleContainer>
         <h4>
           <u>
             <strong>Reviews</strong>
           </u>
         </h4>
+      </ReviewTitleContainer>
+      <ReviewContainer>
         {data != null && data.length == 0 && (
           <h5>There are no reviews for this product yet.</h5>
         )}
@@ -198,22 +200,31 @@ const BackButton = styled(Button)`
   text-align: center;
 `;
 
+const ReviewTitleContainer = styled.div`
+  display: flex;
+  padding-left: 3%;
+`;
+
 const ReviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-height: 100vh;
   padding-top: 0%;
   padding-left: 3%;
   padding-right: 3%
   padding-bottom: 3%;
+  overflow-x: hidden;
+  overflow-y: scroll;
 `;
 
 const EachReviewContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 4vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
 const AvatarImg = styled.img`
@@ -227,7 +238,7 @@ const ReviewDescription = styled.div`
   background: #fbfbfb;
   border-radius: 0.4em;
   padding: 1em;
-  width: 100%;
+  width: 88%;
   border: 1px solid #dbdbdb;
   &:after {
     content: "";

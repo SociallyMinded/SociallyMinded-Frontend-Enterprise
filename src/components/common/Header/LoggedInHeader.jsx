@@ -10,7 +10,6 @@ const LoggedInHeader = () => {
       <SiteLogo></SiteLogo>
       <HeaderSiteLinks>
         <HeaderLink>Dashboard</HeaderLink>
-        <HeaderLink>Data</HeaderLink>
         <HeaderLink to={LISTING_LINK}>Listings</HeaderLink>
         <HeaderLink>Storefront</HeaderLink>
         <HeaderLink to={HOME_LINK}>Logout</HeaderLink>
@@ -28,7 +27,7 @@ const HeaderLinkContainer = styled.div`
 const HeaderSiteLinks = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 40%;
+  margin-left: 47vw;
   margin-top: 0.5em;
   width: 100%;
 `;
