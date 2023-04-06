@@ -2,7 +2,9 @@ import React from "react";
 import SiteLogo from "../SiteLogo/SiteLogo";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { HOME_LINK, VIEW_ORDERS_PAGE_LINK } from "../../../routes/routes";
 import { HOME_LINK, LISTING_LINK } from "../../../routes/routes";
+
 
 const LoggedInHeader = () => {
   return (
@@ -11,6 +13,9 @@ const LoggedInHeader = () => {
       <HeaderSiteLinks>
         <HeaderLink>Dashboard</HeaderLink>
         <HeaderLink>Data</HeaderLink>
+        <HeaderLink>Listings</HeaderLink>
+        <HeaderLink to={VIEW_ORDERS_PAGE_LINK}>Shopfront</HeaderLink>
+        <HeaderLink to={HOME_LINK}>Log Out</HeaderLink>
         <HeaderLink to={LISTING_LINK}>Listings</HeaderLink>
         <HeaderLink>Storefront</HeaderLink>
         <HeaderLink to={HOME_LINK}>Logout</HeaderLink>
