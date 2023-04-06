@@ -122,17 +122,25 @@ const FormButton = styled(Button)`
   height: 35px;
   margin-top: 4%;
   font-family: Nunito;
+  background-color: #2d4696;
+  &:hover {
+    background-color: #34b8fe;
+    border-color: #34b8fe;
+  }
 `;
 
 const GoogleButton = styled(Button)`
   height: 35px;
   margin-top: 4%;
   background: white;
+  color: black;
   font-family: Nunito;
   border: 1px solid #c9c9c9;
   border-radius: 5px;
   &:hover {
     background-color: #ededed;
+    border: 1px solid #c9c9c9;
+    color: black;
   }
 `;
 

@@ -3,8 +3,14 @@ export const USER_NOT_FOUND = "You do not have an account under this email";
 export const GENERIC_EMAIL_ERROR = "Invalid Email";
 export const GENERIC_LOGIN_ERROR = "Login credentials are incorrect";
 
-export const newEnterpriseRecord = (username, email, firebaseUid) => {
+export const newEnterpriseRecord = (
+  enterpriseName,
+  username,
+  email,
+  firebaseUid
+) => {
   return {
+    enterpriseName: enterpriseName,
     username: username,
     email: email,
     firebaseUid: firebaseUid,

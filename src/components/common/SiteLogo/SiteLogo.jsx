@@ -21,6 +21,7 @@ const SiteLogoDescription = styled(Link)`
   color: #2d4696;
   &:hover {
     color: #34b8fe;
+    text-decoration: none;
   }
 `;
 

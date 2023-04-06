@@ -75,24 +75,19 @@ const Signup = () => {
           {state.email.length != 0 &&
             state.username.length != 0 &&
             state.password.length >= 6 && (
-              <FormButton type="submit" variant="primary">
-                Sign Up
-              </FormButton>
+              <FormButton type="submit">Sign Up</FormButton>
             )}
           {(state.email.length == 0 ||
             state.password.length < 6 ||
             state.username.length == 0) && (
-            <FormButton disabled type="submit" variant="primary">
+            <FormButton disabled type="submit">
               Sign Up
             </FormButton>
           )}
-          <FormButton
-            variant="outline-secondary"
-            onClick={setState.signInViaGoogle}
-          >
+          <GoogleButton onClick={setState.signInViaGoogle}>
             <LogoImage src={require("./google.png")}></LogoImage>
             Continue with google
-          </FormButton>
+          </GoogleButton>
         </Form>
         <LoginLink to={LOGIN_PAGE_LINK}>Log in</LoginLink>
       </SignupPageTemplate>
@@ -139,7 +134,29 @@ const FormInput = styled.input`
 `;
 
 const FormButton = styled(Button)`
-  margin-top: 5%;
+  height: 35px;
+  margin-top: 4%;
+  font-family: Nunito;
+  background-color: #2d4696;
+  &:hover {
+    background-color: #34b8fe;
+    border-color: #34b8fe;
+  }
+`;
+
+const GoogleButton = styled(Button)`
+  height: 35px;
+  margin-top: 4%;
+  background: white;
+  color: black;
+  font-family: Nunito;
+  border: 1px solid #c9c9c9;
+  border-radius: 5px;
+  &:hover {
+    background-color: #ededed;
+    border: 1px solid #c9c9c9;
+    color: black;
+  }
 `;
 
 const LogoImage = styled.img`

@@ -37,6 +37,7 @@ const HeaderLink = styled(Link)`
 
   &:hover {
     color: #2d4696;
+    text-decoration: none;
   }
 
   &::before {
