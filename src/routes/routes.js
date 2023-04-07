@@ -22,7 +22,6 @@ export const SIGNUP_PAGE_LINK = "/signup";
 export const LOGIN_PAGE_LINK = "/login";
 export const RESET_PASSWORD_LINK = "/reset_pw";
 export const VIEW_ORDERS_PAGE_LINK = "/view_orders";
-
 export const LISTING_LINK = "/listing";
 export const VIEW_LISTING_LINK = "/view_listing";
-
+export const DASHBOARD_LINK = "/dashboard";

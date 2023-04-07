@@ -92,6 +92,7 @@ const useProductListingHooks = () => {
       setEditProductPrice(product.price);
       setEditProductDescription(product.description);
       setEditProductCategory(product.category);
+      //console.log(product.imageLink);
       setShowEditProductModal(true);
     } else if (action == Actions.DELETE) {
       setShowConfirmDeleteModal(true);
@@ -105,7 +106,7 @@ const useProductListingHooks = () => {
     }
   };
 
-  const fetchProducts = async () => {
+  /*const fetchProducts = async () => {
     try {
       await axios
         .get(getEnterpriseByFirebaseUid + user.uid)
@@ -127,11 +128,28 @@ const useProductListingHooks = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };*/
 
   useEffect(() => {
-    fetchProducts();
-  }, [refreshPage, loading]);
+    axios
+      .get(getEnterpriseByFirebaseUid + user.uid)
+      .then((response) => {
+        setCurrentEnterprise(response.data);
+        return axios.get(
+          getAllProductsByEnterpriseIdUrl + response.data.socialEnterpriseId
+        );
+      })
+      .then((response) => {
+        setData(response.data);
+        setDisplayData(response.data);
+        console.log(currentEnterprise.socialEnterpriseId);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+    //fetchProducts();
+  }, [refreshPage, loading, user]);
 
   const createNewProduct = async (e) => {
     if (user != null) {
@@ -158,22 +176,33 @@ const useProductListingHooks = () => {
             category: productCategory,
           },
         };
-        axios
-          .post(createNewProductUrl, newProduct)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => setError(error))
-          .finally((res) => {
-            setShowAddProductModal(false);
-            setRefreshPage(!refreshPage);
-          });
+
+        if (
+          productName == "" ||
+          productPrice < 0 ||
+          productDescription == "" ||
+          productCategory == ""
+        ) {
+          setShowAddProductModal(true);
+        } else {
+          axios
+            .post(createNewProductUrl, newProduct)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => setError(error))
+            .finally((res) => {
+              setShowAddProductModal(false);
+              setRefreshPage(!refreshPage);
+            });
+          setProductName("");
+          setProductPrice("");
+          setProductDescription("");
+          setSelectedFiles([]);
+          setEditFile("");
+          setProductCategory("");
+        }
       });
-      setProductName("");
-      setProductPrice("");
-      setProductDescription("");
-      setSelectedFiles([]);
-      setProductCategory("");
     } else {
       setShowAddProductModal(false);
     }
@@ -219,6 +248,7 @@ const useProductListingHooks = () => {
       setEditProductPrice("");
       setEditProductDescription("");
       setSelectedFiles([]);
+      setEditFile("");
       setEditProductCategory("");
     } else {
       setShowConfirmEditModal(false);

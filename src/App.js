@@ -10,6 +10,7 @@ import ViewOrdersPage from "./components/StoreFront/ViewOrdersPage";
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import Listing from "./components/Listing/Listing.jsx";
 import ViewListing from "./components/Listing/ViewListing.jsx";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -21,11 +22,11 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/reset_pw" element={<ResetPassword />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/home" element={<Enterprise />} />
-            <Route path="/view_orders" element={<ViewOrdersPage />}/>
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/listing" element={<Listing />} />
             <Route path="/view_listing" element={<ViewListing />} />
-
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/view_orders" element={<ViewOrdersPage />}/>
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>
