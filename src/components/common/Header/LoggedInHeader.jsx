@@ -6,6 +6,7 @@ import {
   DASHBOARD_LINK,
   HOME_LINK,
   LISTING_LINK,
+  VIEW_ORDERS_PAGE_LINK
 } from "../../../routes/routes";
 
 const LoggedInHeader = () => {
@@ -15,7 +16,7 @@ const LoggedInHeader = () => {
       <HeaderSiteLinks>
         <HeaderLink to={DASHBOARD_LINK}>Dashboard</HeaderLink>
         <HeaderLink to={LISTING_LINK}>Listings</HeaderLink>
-        <HeaderLink>Storefront</HeaderLink>
+        <HeaderLink to={VIEW_ORDERS_PAGE_LINK}>Shopfront</HeaderLink>
         <HeaderLink to={HOME_LINK}>Logout</HeaderLink>
       </HeaderSiteLinks>
     </HeaderLinkContainer>
