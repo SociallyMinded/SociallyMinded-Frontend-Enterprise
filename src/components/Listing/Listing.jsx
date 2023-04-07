@@ -82,14 +82,14 @@ const Listing = () => {
       </ProductListingHeaderContainer>
       <ProductListingPage>
         <ProductListingContainer>
-          {data != null && data.length == 0 && (
-            <h5>There are no products yet.</h5>
-          )}
+          {data != null && data.length == 0 && <h5>No products yet.</h5>}
           {data != null &&
             data.map((data) => (
               <ProductListingImgContainer>
                 <ProductListingImgHeaderContainer>
-                  <strong>{data.name}</strong>
+                  <ProductListingImgHeaderText>
+                    <strong>{data.name}</strong>
+                  </ProductListingImgHeaderText>
                   <Dropdown>
                     <Dropdown.Toggle>
                       <FaEllipsisV />
@@ -477,6 +477,14 @@ const ProductListingImgHeaderContainer = styled.div`
   margin-left: 5%;
   margin-bottom: 2%;
   justify-content: space-between;
+`;
+
+const ProductListingImgHeaderText = styled.div`
+  width: 11vw;
+  height: 3vh;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const ProductListingImgContainer = styled.div`

@@ -67,8 +67,8 @@ const ViewListing = () => {
                 <h4>Rating</h4>
                 <p>
                   {location.state.product.ratingScore != null
-                    ? "location.state.product.ratingScore / 5"
-                    : "0 / 5"}
+                    ? location.state.product.ratingScore + " / 5"
+                    : "No ratings yet"}
                 </p>
               </ProductDescriptionDetailContainer>
               <ProductDescriptionDetailContainer>
@@ -93,7 +93,7 @@ const ViewListing = () => {
       </ReviewTitleContainer>
       <ReviewContainer>
         {data != null && data.length == 0 && (
-          <h5>There are no reviews for this product yet.</h5>
+          <h5>No reviews for this product yet.</h5>
         )}
         {data != null &&
           data.map((review) => (
@@ -107,13 +107,8 @@ const ViewListing = () => {
                       : review.customer.username}
                   </strong>
                   <br />
-                  <i>
-                    Posted on:{" "}
-                    {review.dateOfReview != null &&
-                      review.dateOfReview.split("T")[0]}
-                  </i>
+                  <i>Rating: {review.rating}</i>
                 </p>
-                <p>Rating: {review.rating}</p>
                 <p>{review.reviewDescription}</p>
               </ReviewDescription>
             </EachReviewContainer>
