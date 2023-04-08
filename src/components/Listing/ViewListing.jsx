@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import LoggedInHeader from "../common/Header/LoggedInHeader";
 import { useLocation, useNavigate } from "react-router";
 import useProductReviewHooks from "./productReviewHooks";
-import { Badge } from "react-bootstrap";
+import { Badge, Carousel } from "react-bootstrap";
 
 const ViewListing = () => {
   const { user } = UserAuth();
@@ -43,10 +43,26 @@ const ViewListing = () => {
       <ProductPage>
         <ProductContainer>
           <ProductImgSection>
-            <ProductImg
-              src={location.state.product.imageLink[0]}
-              alt="product picture"
-            />
+            {location.state.product.imageLink != null && (
+              <Carousel
+                interval={null}
+                controls={true}
+                indicators={false}
+                nextLabel={null}
+                prevLabel={null}
+                style={{ width: "40vw" }}
+              >
+                {location.state.product.imageLink.map((base64, index) => (
+                  <Carousel.Item>
+                    <ProductImg
+                      key={index}
+                      src={base64}
+                      alt="Product Picture"
+                    />
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            )}
           </ProductImgSection>
           <ProductDescriptionSection>
             <ProductDescriptionContainer>
