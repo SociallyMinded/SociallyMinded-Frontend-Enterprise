@@ -16,8 +16,10 @@ import { DropdownButton, ModalBody } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Actions } from "./productListingHooks.js";
 import "./productListing.css";
+import { useEffect } from "react";
 
 const Listing = () => {
+
   const { state } = useLocation();
   const { user } = UserAuth();
   const {
@@ -56,18 +58,12 @@ const Listing = () => {
     showConfirmDeleteModal,
     handleCloseConfirmDeleteModal,
     editFile,
+    validated,
+    handleSubmit,
+    selectedFiles,
+    showImageUploadError
   } = useProductListingHooks();
 
-  const [validated, setValidated] = useState(false);
-
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
-  };
 
   return (
     <PageTemplate>
@@ -76,12 +72,13 @@ const Listing = () => {
         <Subheader>Products</Subheader>
         <SearchBox>
           <FaSearch />
-          <input type="text" class="form-control ml-2" placeholder="Search" />
+          <input type="text" className="form-control ml-2" placeholder="Search" />
         </SearchBox>
         <AddButton onClick={handleShowAddProductModal}>Add</AddButton>
       </ProductListingHeaderContainer>
       <ProductListingPage>
-        <ProductListingContainer>
+      
+      <ProductListingContainer>
           {data != null && data.length == 0 && <h5>No products yet.</h5>}
           {data != null &&
             data.map((data) => (
@@ -123,50 +120,49 @@ const Listing = () => {
                     </Dropdown.Menu>
                   </Dropdown>
                 </ProductListingImgHeaderContainer>
-                <ProductListingImg
+                {data != null && data.imageLink != null && <ProductListingImg
                   src={data.imageLink[0]}
                   alt="product picture"
-                />
+                />}
               </ProductListingImgContainer>
             ))}
         </ProductListingContainer>
-        <Modal
+         <Modal
           show={showAddProductModal}
           onHide={handleCloseAddProductModal}
           centered
         >
-          <Modal.Header>
+           <Modal.Header>
             <Modal.Title>Add Product</Modal.Title>
             <button
               type="button"
-              class="close"
+              className="close"
               onClick={handleCloseAddProductModal}
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </Modal.Header>
-          <Modal.Body>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  autoFocus
-                  required
-                  maxLength="25"
-                  value={productName}
-                  onChange={handleProductName}
-                />
-                <Form.Control.Feedback type="invalid">
-                  A name is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Form>
-            <Form>
-              <Form.Group
+
+          <Modal.Body>    
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            
+            <Form.Group md="6" controlId="validationCustom03">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+              type="text"
+              required
+              autoFocus
+              maxLength="25"
+              value={productName}
+              onChange={handleProductName}
+              />
+              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                  Please provide a product name
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
@@ -178,11 +174,11 @@ const Listing = () => {
                   onChange={handleProductPrice}
                 />
                 <Form.Control.Feedback type="invalid">
-                  A price is required.
+                  Please provide a price
                 </Form.Control.Feedback>
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </Form.Group>
-            </Form>
-            <Form>
+        
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
@@ -196,144 +192,144 @@ const Listing = () => {
                   onChange={handleProductDescription}
                 />
                 <Form.Control.Feedback type="invalid">
-                  A description is required.
+                  Please provide a product description
                 </Form.Control.Feedback>
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </Form.Group>
-            </Form>
-            <Form>
+        
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>Image</Form.Label>
-                <input
-                  className="ml-3"
-                  id="uploadImage"
-                  type="file"
-                  required
-                  onChange={handleFileChange}
-                />
+                  <input
+                    className="ml-3"
+                    id="uploadImage"
+                    type="file"
+                    required
+                    onChange={handleFileChange}
+                  />
+              {showImageUploadError && <ImageUploadErrorText>Please upload at least 1 image</ImageUploadErrorText>}
+        
               </Form.Group>
-            </Form>
-            <Form>
+
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>Category</Form.Label>
                 <Form.Select className="ml-3" onChange={handleProductCategory}>
-                  <option value="Craft">Craft</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Food">Food</option>
-                  <option value="Others">Others</option>
+                  <option value="CRAFTS">Craft</option>
+                  <option value="CLOTHING">Clothing</option>
+                  <option value="FOOD">Food</option>
+                  <option value="OTHERS">Others</option>
                 </Form.Select>
               </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button type="submit" variant="primary" onClick={createNewProduct}>
-              Add
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal
-          show={showEditProductModal}
-          onHide={handleCloseEditProductModal}
-          centered
-        >
-          <Modal.Header>
-            <Modal.Title>Edit Product</Modal.Title>
-            <button
-              type="button"
-              class="close"
-              onClick={handleCloseEditProductModal}
+       
+              <Button type="submit" variant="primary">
+                Add
+              </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      
+      <Modal
+        show={showEditProductModal}
+        onHide={handleCloseEditProductModal}
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title>Edit Product</Modal.Title>
+          <button
+            type="button"
+            className="close"
+            onClick={handleCloseEditProductModal}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </Modal.Header>
+        <ModalBody>
+          <Form>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlInput1"
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </Modal.Header>
-          <ModalBody>
-            <Form>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                maxLength="25"
+                autoFocus
+                value={editProductName}
+                onChange={(e) => handleEditProductName(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+          <Form>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlInput1"
+            >
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="number"
+                value={editProductPrice}
+                onChange={(e) => handleEditProductPrice(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+          <Form>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlInput1"
+            >
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={4}
+                value={editProductDescription}
+                onChange={(e) => handleEditProductDescription(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+          <Form>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlInput1"
+            >
+              <Form.Label>Image</Form.Label>
+              <input
+                className="ml-3"
+                id="uploadImage"
+                type="file"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
+          </Form>
+          <Form>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlInput1"
+            >
+              <Form.Label>Category</Form.Label>
+              <Form.Select
+                className="ml-3"
+                onChange={(e) => handleEditProductCategory(e.target.value)}
+                defaultValue={editProductCategory}
               >
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  maxLength="25"
-                  autoFocus
-                  value={editProductName}
-                  onChange={(e) => handleEditProductName(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
-            <Form>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>Price</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={editProductPrice}
-                  onChange={(e) => handleEditProductPrice(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
-            <Form>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  value={editProductDescription}
-                  onChange={(e) => handleEditProductDescription(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
-            <Form>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>Image</Form.Label>
-                <input
-                  className="ml-3"
-                  id="uploadImage"
-                  type="file"
-                  onChange={handleFileChange}
-                />
-              </Form.Group>
-            </Form>
-            <Form>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>Category</Form.Label>
-                <Form.Select
-                  className="ml-3"
-                  onChange={(e) => handleEditProductCategory(e.target.value)}
-                  defaultValue={editProductCategory}
-                >
-                  <option value="Craft">Craft</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Food">Food</option>
-                  <option value="Others">Others</option>
-                </Form.Select>
-              </Form.Group>
-            </Form>
-          </ModalBody>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleShowConfirmEditModal}>
-              Save
-            </Button>
-          </Modal.Footer>
-        </Modal>
+                <option value="Craft">Craft</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Food">Food</option>
+                <option value="Others">Others</option>
+              </Form.Select>
+            </Form.Group>
+          </Form>
+        </ModalBody>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleShowConfirmEditModal}>
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
         {productSelected != null && (
           <Modal
@@ -345,7 +341,7 @@ const Listing = () => {
               <Modal.Title>Confirm Edit</Modal.Title>
               <button
                 type="button"
-                class="close"
+                className="close"
                 onClick={handleCloseConfirmEditModal}
               >
                 <span aria-hidden="true">&times;</span>
@@ -444,6 +440,11 @@ const Listing = () => {
     </PageTemplate>
   );
 };
+
+const ImageUploadErrorText = styled.p`
+  font-size:80%;
+  color:#dc3545;
+`
 
 const AddButton = styled(Button)`
   height: 38px;
