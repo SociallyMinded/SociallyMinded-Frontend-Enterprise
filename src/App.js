@@ -10,6 +10,7 @@ import ViewOrdersPage from "./components/StoreFront/ViewOrdersPage";
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import Listing from "./components/Listing/Listing.jsx";
 import ViewListing from "./components/Listing/ViewListing.jsx";
+import ViewOrderDetails from "./components/StoreFront/ViewOrderDetails";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
             <Route path="/view_orders" element={<ViewOrdersPage />}/>
             <Route path="/listing" element={<Listing />} />
             <Route path="/view_listing" element={<ViewListing />} />
-
+            <Route path="/order_details" element={<ViewOrderDetails />} />
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>

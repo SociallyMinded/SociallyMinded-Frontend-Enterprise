@@ -3,7 +3,7 @@ import SiteLogo from "../SiteLogo/SiteLogo";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { HOME_LINK, VIEW_ORDERS_PAGE_LINK } from "../../../routes/routes";
-import { HOME_LINK, LISTING_LINK } from "../../../routes/routes";
+import { LISTING_LINK } from "../../../routes/routes";
 
 
 const LoggedInHeader = () => {

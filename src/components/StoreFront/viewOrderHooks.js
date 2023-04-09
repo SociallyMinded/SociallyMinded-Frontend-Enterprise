@@ -1,18 +1,21 @@
 import { useState, useMemo } from "react"
 import { DataCreationTemplate, DataFetchingTemplate } from "../../utils/dataFetching"
-import { getAllOrders } from "../../routes/routes"
+import { getEnterpriseByFirebaseUid, getAllOrdersByEnterpriseIdUrl } from "../../routes/routes"
+import { UserAuth } from "../../context/AuthContext";
 import axios from 'axios'
 import { useEffect } from "react"
 
 
 const useViewOrderHooks = () => {
+    const { user } = UserAuth();
     const [data, setData] = useState(null)
     const [displayData, setDisplayData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [currentEnterprise, setCurrentEnterprise] = useState(null);
     
-    useEffect(() => {
-        axios.get(getAllOrders)
+    /* useEffect(() => {
+        axios.get(getAllOrdersByEnterpriseIdUrl )
         .then(response => {
             setData(response.data)
             setDisplayData(response.data)
@@ -23,7 +26,36 @@ const useViewOrderHooks = () => {
         .finally (
             setLoading(false)
         )
-    }, []);
+    }, []); */
+
+    console.log(user);
+    const fetchOrders = async () => {
+        try {
+          await axios
+            .get(getEnterpriseByFirebaseUid + user.uid)
+            .then((response) => {
+              setCurrentEnterprise(response.data);
+              return axios.get(
+                getAllOrdersByEnterpriseIdUrl +
+                  response.data.socialEnterpriseId
+              );
+            })
+            .then((response) => {
+              setData(response.data);
+              setDisplayData(response.data);
+              console.log(currentEnterprise.socialEnterpriseId);
+              console.log(response.data);
+            });
+        } catch (error) {
+          setError(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      useEffect(() => {
+        fetchOrders();
+      }, [user]);
 
     // Handle search input
     const [searchQuery, setSearchQuery] = useState("") 

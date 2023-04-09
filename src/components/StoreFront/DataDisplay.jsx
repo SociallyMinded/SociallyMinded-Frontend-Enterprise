@@ -11,7 +11,7 @@ export const DataDisplay = ({data}) => {
             {data.displayData != null && data.displayData.map((d) => (
                 <StyledCol md={3}>
                     
-                <StyledLink id="styled-card-link" to="/product_listing" state={{ d }}>
+                <StyledLink id="styled-card-link" to="/order_details" state={{ d }}>
                     
                     <StyledCard>
                     <StyledImg variant="top" src={require('./donut.png')} />
