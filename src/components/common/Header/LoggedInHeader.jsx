@@ -3,9 +3,10 @@ import SiteLogo from "../SiteLogo/SiteLogo";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import {
+  DASHBOARD_LINK,
   HOME_LINK,
   LISTING_LINK,
-  DASHBOARD_LINK,
+  VIEW_ORDERS_PAGE_LINK,
 } from "../../../routes/routes";
 
 const LoggedInHeader = () => {
@@ -14,9 +15,8 @@ const LoggedInHeader = () => {
       <SiteLogo></SiteLogo>
       <HeaderSiteLinks>
         <HeaderLink to={DASHBOARD_LINK}>Dashboard</HeaderLink>
-        <HeaderLink>Data</HeaderLink>
         <HeaderLink to={LISTING_LINK}>Listings</HeaderLink>
-        <HeaderLink>Storefront</HeaderLink>
+        <HeaderLink to={VIEW_ORDERS_PAGE_LINK}>Shopfront</HeaderLink>
         <HeaderLink to={HOME_LINK}>Logout</HeaderLink>
       </HeaderSiteLinks>
     </HeaderLinkContainer>
@@ -32,7 +32,7 @@ const HeaderLinkContainer = styled.div`
 const HeaderSiteLinks = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 40%;
+  margin-left: 47vw;
   margin-top: 0.5em;
   width: 100%;
 `;
