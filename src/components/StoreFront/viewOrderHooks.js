@@ -58,28 +58,14 @@ const useViewOrderHooks = () => {
     const performSearch = () => {
         setShowSearchPrompts(false)
 
-        var queryNormalized = searchQuery
-        var queryLen = queryNormalized.length
+        if (searchQuery == "") {
+            setDisplayData(data)
+        } else {
+            
+            var displaySearchData = data.filter(data => data.orderRecordId == searchQuery)
         
-        var displaySearchData = data.filter(data => data.orderRecordId == queryNormalized)
-    
-        /*// Get all categories of interest
-        var filteredCategories = []
-        for (const [key, value] of categories.entries()) {
-            if (value % 2 == 0 && key != undefined) {
-                filteredCategories.push(key)
-            }
+            setDisplayData(displaySearchData) 
         }
-
-        // Filter data by search input string -> category 
-        var filteredDisplayData = []
-        for (const d of displaySearchData) {
-            if (filteredCategories.includes(d.category)) {
-                filteredDisplayData.push(d)
-            }
-        }*/
-
-        setDisplayData(displaySearchData) 
     }
 
     return { 

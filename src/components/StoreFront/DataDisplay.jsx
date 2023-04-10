@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 export const DataDisplay = ({data}) => {
     console.log(data)
@@ -12,20 +13,19 @@ export const DataDisplay = ({data}) => {
                 <StyledCol md={3}>
                     
                 <StyledLink id="styled-card-link" to="/product_listing" state={{ d }}>
-                    
-                    <StyledCard>
+                <StyledCard>
+                    <StyledCardTitleHeader>Order {d.orderRecordId}</StyledCardTitleHeader>
                     <StyledImg variant="top" src={require('./donut.png')} />
-                    <StyledCardHeader>
-                        Order ID: {d.orderRecordId}
-                    </StyledCardHeader>
-                    <StyledCardSubtitle className="mb-2 text-muted">
-                        {d.dateOfOrder}
-                    </StyledCardSubtitle>                   
-                        <StyledCardBody>
-                            <Card.Title>{d.orderTitle}</Card.Title>
-                            <Card.Title>${d.totalPrice}</Card.Title>
-                        </StyledCardBody>
-                    </StyledCard>
+                    <StyledCardBody>
+                            <StyledCardTitle>{d.orderTitle}</StyledCardTitle>
+                            <StyledCardTitle>{d.dateOfOrder.split("T")[0]}</StyledCardTitle>
+                            <StyledCardSubTitle>
+                                {d.orderStatus == "Pending Approval" && <PAHighlightedText>{d.orderStatus}</PAHighlightedText>}
+                                {d.orderStatus == "In Delivery" && <IDHighlightedText>{d.orderStatus}</IDHighlightedText>}
+                                {d.orderStatus == "Order Received" && <ORHighlightedText>{d.orderStatus}</ORHighlightedText>}
+                            </StyledCardSubTitle>
+                    </StyledCardBody>
+                </StyledCard>
                 </StyledLink>
                 </StyledCol>
             ))}
@@ -33,6 +33,54 @@ export const DataDisplay = ({data}) => {
         </StyledRow>
     )
 }
+
+const PAHighlightedText = styled.p`
+    background-color:#ffd9de;
+    border-radius:5px;
+    padding-left:0.5em;
+    padding-right:0.5em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+`
+const IDHighlightedText = styled.p`
+    background-color:#ffedc7;
+    border-radius:5px;
+    padding-left:0.5em;
+    padding-right:0.5em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+`
+
+const ORHighlightedText = styled.p`
+    background-color:#cbf5d8;
+    border-radius:5px;
+    padding-left:0.5em;
+    padding-right:0.5em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+`
+
+const StyledButton = styled(Button)`
+    width:100%;
+`
+
+const StyledCardTitleHeader = styled.div`
+    font-weight:bold;
+    font-size:1.2em;
+    margin-top:0.5vw;
+    margin-bottom:0.5vw;
+    margin-left:1vw;
+`
+
+const StyledCardSubTitle = styled.p`
+    display:flex;
+    flex-direction:row;
+    margin-top:1vh;
+`
+
+const StyledCardTitle = styled.div`
+    font-weight:bold;
+`
 
 const StyledCardHeader = styled(Card.Header)`
     background-color:white;
@@ -103,21 +151,22 @@ const StyledCard = styled(Card)`
 
 const StyledCardBody = styled(Card.Body)`
     display: flex;
-    flex-direction: row;
-    align-items:center;
-    justify-content: space-between;
+    flex-direction: column;
+    max-width:100%;
+    text-overflow:ellipsis;
 `
 
 const StyledText = styled.p`
     width:100%;
     font-size:1.5em;
     margin-top:2%;
+    margin-left:1.5vw;
 `
 
 const StyledImg = styled(Card.Img)`
   border-width:0px;
-  width: 180px;
-  height: 160px;
+  width: 100%;
+  height: 100%;
   display: block;
   margin-left: auto;
   margin-right: auto;
