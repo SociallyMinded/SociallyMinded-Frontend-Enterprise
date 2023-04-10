@@ -4,16 +4,72 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import { useState } from "react"
+import Form from 'react-bootstrap/Form';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export const DataDisplay = ({data}) => {
-    console.log(data)
+
+    console.log(data.displayData)
+
     return (
         <StyledRow lg={5} md={4}>
             {data.displayData != null && data.displayData.map((d) => (
                 <StyledCol md={3}>
+                      
+            {data.showOrderModal && <>
+
+                <Modal
+                    show={data.showOrderModal}
+                    onHide={data.handleClose}
+                    keyboard={false}
+                >
+                <Modal.Header>
+                    <Modal.Title>Order Id {d.orderRecordId}</Modal.Title>
+                </Modal.Header>
+                
+                <Modal.Body>
+                    Order Title
+                    <Form.Control placeholder={d.orderTitle} disabled />
+                </Modal.Body>
+ 
+                <Modal.Body>
+                    Order Date
+                    <Form.Control placeholder={d.dateOfOrder.split("T")[0]} disabled />
+                </Modal.Body>
+
+                <Modal.Body>
+                    Order Details
+                    <Form.Control as="textarea" placeholder={d.orderDetails} disabled />
+                </Modal.Body>
+
+                <Modal.Body>
+                    Order Status
+                    <Form.Control placeholder={d.orderStatus} disabled />
+                </Modal.Body>   
+
+                <Modal.Body>
+                    Customer Email
+                    <Form.Control placeholder={d.customer.email} disabled />
+                </Modal.Body>
+
+                <Modal.Body>
+                    Customer Address
+                    <Form.Control as="textarea" placeholder={d.address} disabled />
+                </Modal.Body>
+          
+
+                <Modal.Footer>
+                    <Button variant="primary" onClick={() => data.updatedOrderStatus(d)}>Update Order Status</Button>
+                    <Button variant="secondary" onClick={d.handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+                </Modal>
+                </>}
                     
-                <StyledLink id="styled-card-link" to="/product_listing" state={{ d }}>
-                <StyledCard>
+                <StyledCard onClick={(e) => data.setShowOrderModal(true)}>
                     <StyledCardTitleHeader>Order {d.orderRecordId}</StyledCardTitleHeader>
                     <StyledImg variant="top" src={d.product.imageLink[0]} />
                     <StyledCardBody>
@@ -26,10 +82,10 @@ export const DataDisplay = ({data}) => {
                             </StyledCardSubTitle>
                     </StyledCardBody>
                 </StyledCard>
-                </StyledLink>
                 </StyledCol>
             ))}
             {data.displayData != null && data.displayData.length == 0 && <StyledText>There are no orders to display</StyledText>}
+
         </StyledRow>
     )
 }

@@ -7,6 +7,8 @@ import { PromptResults } from "./PromptResults";
 import useLoginHooks from "../Login/loginHooks";
 import Header from "../common/Header/Header"; 
 import { UserAuth } from "../../context/AuthContext";
+import axios from "axios";
+import { updateOrderUrl } from "../../routes/routes";
 
 const ViewOrdersPage = () => {
     const { user } = UserAuth()
@@ -14,10 +16,9 @@ const ViewOrdersPage = () => {
     const {         
         searchQuery, data, loading,
         searchByProductName, searchPrompts, handleSearchQuery, 
-        displayData, showSearchPrompts, performSearch
-        
+        displayData, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
+        setShowOrderModal, handleClose        
     } = useViewOrderHooks(user);
-
 
     return (
         <PageTemplate>   
@@ -40,7 +41,12 @@ const ViewOrdersPage = () => {
                 />
 
                 <DataDisplay 
-                    data={{ displayData: displayData }}
+                    data={{ 
+                        displayData: displayData,
+                        updatedOrderStatus: updatedOrderStatus,
+                        showOrderModal: showOrderModal,
+                        setShowOrderModal: setShowOrderModal
+                    }}
                 />
 
             </div>

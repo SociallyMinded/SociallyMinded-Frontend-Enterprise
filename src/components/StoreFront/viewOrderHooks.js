@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react"
 import { DataCreationTemplate, DataFetchingTemplate } from "../../utils/dataFetching"
-import { getAllOrdersByEnterpriseFirebaseUid } from "../../routes/routes"
+import { getAllOrdersByEnterpriseFirebaseUid, updateOrderUrl } from "../../routes/routes"
 import axios from 'axios'
 import { useEffect } from "react"
 import { UserAuth } from "../../context/AuthContext"
@@ -10,7 +10,8 @@ const useViewOrderHooks = (user) => {
     const [displayData, setDisplayData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
-    
+    const [refresh, toggleRefresh] = useState(false)
+
     useEffect(() => {
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
         .then(response => {
@@ -23,7 +24,7 @@ const useViewOrderHooks = (user) => {
         .finally (
             setLoading(false)
         )
-    }, [user]);
+    }, [user, refresh]);
 
     // Handle search input
     const [searchQuery, setSearchQuery] = useState("") 
@@ -68,11 +69,56 @@ const useViewOrderHooks = (user) => {
         }
     }
 
+    const [showOrderModal, setShowOrderModal] = useState(false);
+
+    const handleClose = () => setShowOrderModal(false);
+    const handleShow = () => setShowOrderModal(true);
+
+
+    const updatedOrderStatus = async (d) => {
+        console.log(d)
+        toggleRefresh(false)
+        if (user != null) {
+            const updatedRecord =  {
+                "productId" : d.product.productId,
+                "custFirebaseUid": d.customer.firebaseUid,
+                "record": {
+                    "quantity": d.quantity,
+                    "totalPrice": d.totalPrice,
+                    "orderTitle": d.orderTitle,
+                    "orderRecordId": d.orderRecordId,
+                    "dateOfOrder": d.dateOfOrder,
+                    "orderStatus": "In Delivery",
+                    "address": d.address,
+                    "orderDetails": d.orderDetails
+                }
+            }
+        
+            await axios.put(updateOrderUrl + d.orderRecordId, updatedRecord)
+                .then(response => {
+                    console.log(response.data)
+                })
+                
+                .catch ((error) => {
+                    console.log(error)
+                    setError(error)
+                })
+                
+                .finally (() => {
+                    setLoading(false)
+                    setShowOrderModal(false)
+                    toggleRefresh(true)
+                })
+
+        }
+    }
+
     return { 
         searchQuery,
         data, loading,
         searchByProductName, displayData,
-        searchPrompts, handleSearchQuery, showSearchPrompts, performSearch
+        searchPrompts, handleSearchQuery, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
+        setShowOrderModal, handleClose
     } 
 }
 

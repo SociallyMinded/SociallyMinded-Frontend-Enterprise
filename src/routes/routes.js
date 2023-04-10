@@ -19,6 +19,8 @@ export const deleteProductUrl =
 export const getAllReviewsByProductIdUrl =
   "http://localhost:8080/SociallyMinded-war/webresources/entity.review/findReviewsByProductId/";
 
+export const updateOrderUrl = 
+  "http://localhost:8080/SociallyMinded-war/webresources/entity.orderrecord/"
 
 export const HOME_LINK = "/";
 export const SIGNUP_PAGE_LINK = "/signup";
