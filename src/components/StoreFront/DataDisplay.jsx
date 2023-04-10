@@ -62,7 +62,7 @@ export const DataDisplay = ({data}) => {
 
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => data.updatedOrderStatus(d)}>Update Order Status</Button>
-                    <Button variant="secondary" onClick={d.handleClose}>
+                    <Button variant="secondary" onClick={() => data.setShowOrderModal(false)}>
                         Close
                     </Button>
                 </Modal.Footer>
