@@ -1,22 +1,20 @@
 import styled from "styled-components";
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import { PageTemplate } from "../common/styles";
 import { UserAuth } from "../../context/AuthContext";
 import LoggedInHeader from "../common/Header/LoggedInHeader";
-import React from "react";
-import Modal from "react-bootstrap/Modal";
-import Toast from "react-bootstrap/Toast";
-import Form from "react-bootstrap/Form";
-import { useLocation, Link } from "react-router-dom";
 import Header from "../common/Header/Header";
+import React from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import Dropdown from "react-bootstrap/Dropdown";
+import Alert from "react-bootstrap/Alert";
+import { useLocation } from "react-router-dom";
 import useProductListingHooks from "./productListingHooks";
 import { FaEllipsisV, FaSearch } from "react-icons/fa";
-import { DropdownButton, ModalBody } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
+import { ModalBody } from "react-bootstrap";
 import { Actions } from "./productListingHooks.js";
 import "./productListing.css";
-import { useEffect } from "react";
 
 const Listing = () => {
   const { state } = useLocation();
@@ -61,6 +59,9 @@ const Listing = () => {
     handleSubmit,
     selectedFiles,
     showImageUploadError,
+    serverError,
+    showErrorWarning,
+    handleShowErrorWarning,
   } = useProductListingHooks();
 
   return (
@@ -78,6 +79,16 @@ const Listing = () => {
         </SearchBox>
         <AddButton onClick={handleShowAddProductModal}>Add</AddButton>
       </ProductListingHeaderContainer>
+      {showErrorWarning && (
+        <Alert
+          variant={"danger"}
+          style={{ width: "30rem", marginTop: "10px", marginBottom: 0 }}
+          onClose={handleShowErrorWarning}
+          dismissible
+        >
+          {serverError}
+        </Alert>
+      )}
       <ProductListingPage>
         <ProductListingContainer>
           {data != null && data.length == 0 && <h5>No products yet.</h5>}
@@ -519,6 +530,34 @@ const ProductListingImgContainer = styled.div`
   margin-left: 1.4vw;
   margin-right: 1.4vw;
   align-items: center;
+
+  display: block;
+  top: 0px;
+  position: relative;
+  border-radius: 4px;
+  text-decoration: none;
+  z-index: 0;
+  overflow: hidden;
+
+  &:hover {
+    transition: all 0.2s ease-out;
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    border-radius: 10px;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 32px;
+    transform: scale(2);
+    transform-origin: 50% 50%;
+    transition: transform 0.15s ease-out;
+  }
+
+  &:hover:before {
+    transform: scale(2.15);
+  }
 `;
 
 const ProductListingImg = styled.img`

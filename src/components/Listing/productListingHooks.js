@@ -121,6 +121,12 @@ const useProductListingHooks = () => {
     createNewProduct(event);
   };
 
+  const [serverError, setServerError] = useState("");
+  const [showErrorWarning, setShowErrorWarning] = useState(false);
+  const handleShowErrorWarning = (event) => {
+    setShowErrorWarning(!showErrorWarning);
+  };
+
   useEffect(() => {
     setProductName("");
     setProductPrice("");
@@ -247,38 +253,6 @@ const useProductListingHooks = () => {
     }
   };
 
-  /*const updateProduct = async () => {
-    if (user != null) {
-      //const socialEnterpriseId = 3;
-      console.log(productSelected.productId);
-      const updatedProduct = {
-        socialEnterpriseId: currentEnterprise.socialEnterpriseId,
-        //socialEnterpriseFirebaseUid: socialEnterpriseFirebaseUid,
-        product: {
-          name: editProductName,
-          price: editProductPrice,
-          description: editProductDescription,
-          imageLink: editImageLink,
-          productId: productSelected.productId,
-        },
-      };
-
-      await axios
-        .put(updateProductUrl + productSelected.productId, updatedProduct)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => setError(error.response.data))
-        .finally((res) => {
-          setShowConfirmEditModal(false);
-          setRefreshPage(!refreshPage);
-        });
-    } else {
-      //setShowEditProductModal(false);
-      setShowConfirmEditModal(false);
-    }
-  };*/
-
   const deleteProduct = async () => {
     if (user != null) {
       await axios
@@ -286,7 +260,11 @@ const useProductListingHooks = () => {
         .then((response) => {
           console.log(response);
         })
-        .catch((error) => setError(error))
+        .catch((error) => {
+          setError(error);
+          setServerError("Product has uncompleted orders. Cannot be deleted.");
+          setShowErrorWarning(true);
+        })
         .finally((res) => {
           setShowConfirmDeleteModal(false);
           setRefreshPage(!refreshPage);
@@ -339,6 +317,9 @@ const useProductListingHooks = () => {
     handleSubmit,
     selectedFiles,
     showImageUploadError,
+    serverError,
+    showErrorWarning,
+    handleShowErrorWarning,
   };
 };
 
