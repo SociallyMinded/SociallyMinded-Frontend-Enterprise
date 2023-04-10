@@ -82,7 +82,8 @@ export const DataDisplay = ({data}) => {
 
 
                 <Modal.Footer>
-                    <Button variant="primary" onClick={() => data.updatedOrderStatus(selectedOrder)}>Update Order Status</Button>
+                    {selectedOrder.orderStatus != "Order Received" && <Button variant="primary" onClick={() => data.updatedOrderStatus(selectedOrder)}>Update Status To In Delivery</Button>}
+                    {selectedOrder.orderStatus == "Order Received" && <Button variant="primary" disabled onClick={() => data.updatedOrderStatus(selectedOrder)}>Update Status To In Delivery</Button>}
                     <Button variant="secondary" onClick={() => data.setShowOrderModal(false)}>
                         Close
                     </Button>
