@@ -15,7 +15,7 @@ export const DataDisplay = ({data}) => {
                 <StyledLink id="styled-card-link" to="/product_listing" state={{ d }}>
                 <StyledCard>
                     <StyledCardTitleHeader>Order {d.orderRecordId}</StyledCardTitleHeader>
-                    <StyledImg variant="top" src={require('./donut.png')} />
+                    <StyledImg variant="top" src={d.product.imageLink[0]} />
                     <StyledCardBody>
                             <StyledCardTitle>{d.orderTitle}</StyledCardTitle>
                             <StyledCardTitle>{d.dateOfOrder.split("T")[0]}</StyledCardTitle>
@@ -75,7 +75,7 @@ const StyledCardTitleHeader = styled.div`
 const StyledCardSubTitle = styled.p`
     display:flex;
     flex-direction:row;
-    margin-top:1vh;
+    margin-top:2vh;
 `
 
 const StyledCardTitle = styled.div`
@@ -102,7 +102,6 @@ const StyledRow = styled(Row)`
 
 const StyledCol = styled(Col)`
     margin-top:2%;
-    max-height:80vh;
 `
 
 const StyledLink = styled(Link)`
@@ -116,6 +115,7 @@ const StyledLink = styled(Link)`
 `
 
 const StyledCard = styled(Card)`
+
     display: block;
     top: 0px;
     position: relative;
@@ -126,7 +126,6 @@ const StyledCard = styled(Card)`
     border: 2px solid rgba(121, 173, 209, 0.4);
     align: center;
     
-  
     &:hover {
         transition: all 0.2s ease-out;
         box-shadow: 0px 4px 8px rgba(121, 173, 209, 0.4);
@@ -154,6 +153,7 @@ const StyledCardBody = styled(Card.Body)`
     flex-direction: column;
     max-width:100%;
     text-overflow:ellipsis;
+    height:20vh;
 `
 
 const StyledText = styled.p`
@@ -166,10 +166,5 @@ const StyledText = styled.p`
 const StyledImg = styled(Card.Img)`
   border-width:0px;
   width: 100%;
-  height: 100%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-
-  
+  height: 25vh;
 `

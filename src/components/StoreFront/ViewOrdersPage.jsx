@@ -9,14 +9,15 @@ import Header from "../common/Header/Header";
 import { UserAuth } from "../../context/AuthContext";
 
 const ViewOrdersPage = () => {
+    const { user } = UserAuth()
+
     const {         
         searchQuery, data, loading,
         searchByProductName, searchPrompts, handleSearchQuery, 
         displayData, showSearchPrompts, performSearch
         
-    } = useViewOrderHooks();
+    } = useViewOrderHooks(user);
 
-    const { user } = UserAuth()
 
     return (
         <PageTemplate>   
