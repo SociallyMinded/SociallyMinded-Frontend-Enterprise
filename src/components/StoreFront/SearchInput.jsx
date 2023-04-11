@@ -5,10 +5,55 @@ import { DropdownButton } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import { Dropdown } from 'react-bootstrap';
 import { useState } from 'react';
+import { CSVLink, CSVDownload } from "react-csv";
+
+const exportHeaders = [
+    { label: "Order Title", key: "orderTitle" },
+    { label: "Address", key: "address" },
+    { label: "Quantity", key: "quantity" },
+    { label: "Total Price", key: "totalPrice" },
+    { label: "Date of Order", key: "dateOfOrder" },
+    { label: "Order Status", key: "orderStatus" }
+];
 
 export const SearchInput = ({ data }) => { 
 
     const [filterCriteria, setFilterCriteria] = useState("")
+
+
+    const [dataExport, setDataExport] = useState([])
+    const [showExportData, setShowExportData] = useState(true)
+    const handleShowExportData = () => setShowExportData(true)
+    const handleCloseExportDate = () => setShowExportData(false)
+
+    const [showDownloadData, setShowDownloadData] = useState(false)
+    //it save according to the filtered data.
+    const prepareDataForExport = () => {
+        var dataPrep = []
+        if (data.displayData != null) {
+            for (let i = 0; i < data.displayData.length; i++) {
+                const dataModel = {
+                    "orderTitle": data.displayData[i].orderTitle,
+                    "address": data.displayData[i].address,
+                    "quantity": data.displayData[i].quantity,
+                    "totalPrice": data.displayData[i].totalPrice,
+                    "dateOfOrder": data.displayData[i].dateOfOrder,
+                    "orderStatus": data.displayData[i].orderStatus
+                }
+                dataPrep.push(dataModel)
+            }
+        } 
+        setDataExport(dataPrep)
+        setShowDownloadData(true)
+        setShowExportData(false)
+    }
+    
+    const handleDownloadData = () => {
+        setShowDownloadData(false)
+        setShowExportData(true)
+    }
+    const [orderStatus, setOrderStatus] = useState("All");
+    const [searchQuery, setSearchQuery] = useState("");
 
     return ( 
           <StyledContainer> 
@@ -20,57 +65,76 @@ export const SearchInput = ({ data }) => {
                     value={data.searchQuery} 
                 /> 
                 <Button variant="primary" onClick={data.performSearch}>Search</Button>
-                    <Dropdown>
-                        <StyledDropdown variant="primary" id="dropdown-basic">
-                            {filterCriteria == "" && <p>Filter By Order Status</p>}
-                            {filterCriteria != "" && <p>{filterCriteria}</p>}
-                        </StyledDropdown>
+                <>
+                    {showExportData && <StyledButton onClick={prepareDataForExport}>Export Data</StyledButton>}
+                    {showDownloadData && <StyledButton onClick={handleDownloadData}>
+                        <StyledCSVLink 
+                            data={dataExport != null && dataExport} 
+                            headers={exportHeaders}
+                            filename={`Order_Records_${new Date()}`}
+                            extension=".csv"
+                        >                
+                            Download Order Records
+                        </StyledCSVLink>
+                    </StyledButton>}
+                </>
 
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => {
-                                setFilterCriteria("Pending Approval")
-                                data.performFilter("Pending Approval")
+                <StyledDropdownContainer>
+                    <StyledDropdown variant="primary" id="dropdown-basic">
+                        {filterCriteria == "" && <p>Filter By Order Status</p>}
+                        {filterCriteria != "" && <p>{filterCriteria}</p>}
+                    </StyledDropdown>
 
-                            }}>
-                                Pending Approval
-                            </Dropdown.Item>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("Pending Approval")
+                            data.performFilter("Pending Approval")
 
-                            <Dropdown.Item onClick={() => {
-                                setFilterCriteria("In Delivery")
-                                data.performFilter("In Delivery")
-                            }}>
-                                In Delivery
-                            </Dropdown.Item>
+                        }}>
+                            Pending Approval
+                        </Dropdown.Item>
 
-                            <Dropdown.Item onClick={() => {
-                                setFilterCriteria("Order Received")
-                                data.performFilter("Order Received")
-                            }}>
-                                Order Received
-                            </Dropdown.Item>
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("In Delivery")
+                            data.performFilter("In Delivery")
+                        }}>
+                            In Delivery
+                        </Dropdown.Item>
 
-                            <Dropdown.Item onClick={() => {
-                                setFilterCriteria("All Orders")
-                                data.performFilter("All Orders")
-                            }}>
-                                All Orders
-                            </Dropdown.Item>
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("Order Received")
+                            data.performFilter("Order Received")
+                        }}>
+                            Order Received
+                        </Dropdown.Item>
 
-                        </Dropdown.Menu>
-                    </Dropdown>
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("All Orders")
+                            data.performFilter("All Orders")
+                        }}>
+                            All Orders
+                        </Dropdown.Item>
 
+                    </Dropdown.Menu>
+                </StyledDropdownContainer>
             </StyledInputGroup> 
          </StyledContainer> 
  
     ) 
 } 
+
+const StyledButton = styled(Button)`
+    margin-left:1vw;
+`
  
+const StyledDropdownContainer = styled(Dropdown)`
+`
+
 const StyledDropdown = styled(Dropdown.Toggle)`
     background-color:#14A44D;
     color:white;
     margin-left:1vw;
-    max-height:100%;
-    height:100%;
+    height:110%;
 
     &:hover{
         background-color:#14A44D;
@@ -81,11 +145,6 @@ const StyledDropdown = styled(Dropdown.Toggle)`
         background-color:#14A44D;
         color:white;
     }
-
-`
-
-const FilterButton = styled(Button)`
-    margin-left:1vw;
 
 `
 
@@ -105,11 +164,28 @@ const StyledInputGroup = styled(InputGroup)`
  
 const StyledFormControl = styled(Form.Control)`
     margin-right: 0; 
-    padding-right: 0; 
-    height:100%;
+    padding-right: 0;
+    height:5vh;
+
 `
      
 const StyledFormCheck = styled(Form.Check)`
     padding-left:3vw;
 `
   
+const StyledCSVLink = styled(CSVLink)`
+    text-decoration: none !important;
+    color:white;
+    &:hover {
+        text-decoration: none !important;
+        color:white;
+    }
+    &:after {
+        text-decoration: none !important;
+        color:white;
+    }
+    &:before {
+        text-decoration: none !important;
+        color:white;
+    }
+`

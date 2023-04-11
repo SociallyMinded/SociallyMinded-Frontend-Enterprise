@@ -28,6 +28,8 @@ const ViewOrdersPage = () => {
             <div>
                 <SearchInput 
                     data={{
+                        user:user,
+                        displayData:displayData,
                         searchByProductName: searchByProductName,
                         searchQuery: searchQuery,
                         performSearch: performSearch,
