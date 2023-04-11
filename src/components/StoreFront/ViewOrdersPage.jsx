@@ -19,7 +19,7 @@ const ViewOrdersPage = () => {
         searchQuery, data, loading,
         searchByProductName, searchPrompts, handleSearchQuery, 
         displayData, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
-        setShowOrderModal, handleClose        
+        setShowOrderModal, handleClose, performFilter        
     } = useViewOrderHooks(user);
 
     return (
@@ -30,7 +30,8 @@ const ViewOrdersPage = () => {
                     data={{
                         searchByProductName: searchByProductName,
                         searchQuery: searchQuery,
-                        performSearch: performSearch
+                        performSearch: performSearch,
+                        performFilter: performFilter
                     }}
                 />
 

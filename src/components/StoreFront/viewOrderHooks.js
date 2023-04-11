@@ -69,6 +69,16 @@ const useViewOrderHooks = (user) => {
         }
     }
 
+    const performFilter = (filterOrderStatus) => {
+        if (filterOrderStatus != "All Orders") {
+            var filteredData = data.filter(data => data.orderStatus == filterOrderStatus)
+            setDisplayData(filteredData) 
+        } else {
+            setDisplayData(data)
+        }
+    }
+    
+
     const [showOrderModal, setShowOrderModal] = useState(false);
 
     const handleClose = () => setShowOrderModal(false);
@@ -119,7 +129,7 @@ const useViewOrderHooks = (user) => {
         data, loading,
         searchByProductName, displayData,
         searchPrompts, handleSearchQuery, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
-        setShowOrderModal, handleClose
+        setShowOrderModal, handleClose, performFilter
     } 
 }
 
