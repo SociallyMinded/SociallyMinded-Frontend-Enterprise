@@ -19,6 +19,8 @@ export const DataDisplay = ({data}) => {
         <StyledRow lg={5} md={4}>
             {data.displayData != null && data.displayData.map((d) => (
                 <StyledCol md={3}>
+                <StyledLink id="styled-card-link"  to={'/order_details/'+ d.orderRecordId } state={{ d }}>
+
                 <StyledCard onClick={() => {
                     data.setShowOrderModal(true)
                     setSelectedOrder(d)
@@ -36,11 +38,12 @@ export const DataDisplay = ({data}) => {
                             </StyledCardSubTitle>
                     </StyledCardBody>
                 </StyledCard>
+                </StyledLink>
                 </StyledCol>
             ))}
             {data.displayData != null && data.displayData.length == 0 && <StyledText>There are no orders to display</StyledText>}
 
-            {data.showOrderModal && <>
+            {/* {data.showOrderModal && <>
                 <Modal
                     show={data.showOrderModal}
                     onHide={data.handleClose}
@@ -89,7 +92,7 @@ export const DataDisplay = ({data}) => {
                     </Button>
                 </Modal.Footer>
                 </Modal>
-                </>}
+                </>} */}
 
         </StyledRow>
     )

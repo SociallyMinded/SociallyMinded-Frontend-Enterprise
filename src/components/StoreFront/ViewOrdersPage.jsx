@@ -8,7 +8,9 @@ import useLoginHooks from "../Login/loginHooks";
 import Header from "../common/Header/Header"; 
 import { UserAuth } from "../../context/AuthContext";
 import axios from "axios";
-import { updateOrderUrl } from "../../routes/routes";
+import { getAllOrdersByEnterpriseFirebaseUid, updateOrderUrl } from "../../routes/routes"
+import { ViewOrderDetails } from "./ViewOrderDetails";
+import { Link } from "react-router-dom";
 
 const ViewOrdersPage = () => {
     const { user } = UserAuth()
@@ -48,7 +50,6 @@ const ViewOrdersPage = () => {
                         setShowOrderModal: setShowOrderModal
                     }}
                 />
-
             </div>
         </PageTemplate>
     )

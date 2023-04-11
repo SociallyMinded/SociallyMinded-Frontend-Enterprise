@@ -16,12 +16,18 @@ export const SearchInput = ({ data }) => {
                     value={data.searchQuery} 
                 /> 
                 <Button variant="primary" onClick={data.performSearch}>Search</Button>
+                <FilterButton variant="secondary" onClick={data.performSearch}>Filter By Order Status</FilterButton>
             </StyledInputGroup> 
          </StyledContainer> 
  
     ) 
 } 
  
+const FilterButton = styled(Button)`
+    margin-left:1vw;
+
+`
+
 const StyledContainer = styled.div`
     flex-direction: row 
 `
@@ -35,7 +41,6 @@ const StyledInputGroup = styled(InputGroup)`
     
  
 const StyledFormControl = styled(Form.Control)`
-    width: 1000vw; 
     margin-right: 0; 
     padding-right: 0; 
 `
