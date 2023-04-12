@@ -5,6 +5,7 @@ import Header from "../common/Header/Header";
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, Cell, Sankey } from 'recharts';
 import { Link } from "react-router-dom";
+import './tooltip.css'
 
 import {
   LineChart,
@@ -20,7 +21,25 @@ import {
 import styled from "styled-components";
 import useDashboardHooks from "./useDashboardHooks";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { Text } from "recharts";
 
+
+const CustomXAxisTick = ({ x, y, payload }) => {
+  if (payload && payload.value) {
+    return (
+      <Text
+          fontSize={"18px"}
+          x={x} 
+          y={y} 
+          textAnchor="middle" 
+          verticalAnchor="start"
+      >{payload.value}
+      </Text>
+
+    );
+  }
+  return null;
+};
 
 const determineMonth = (monthNumeric) => {
   let actualMonth = monthNumeric + 1
@@ -93,8 +112,20 @@ export default function Dashboard() {
     );
   };
 
-  console.log(selectedMonth)
-
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`Id : ${label}`}</p>
+          <p className="label">{`Name : ${payload[0].payload.name}`}</p>
+          <p className="label">{`Rating : ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+  
+    return null;
+  };
+  
   return (
     <PageTemplate>
       {user == null ? <Header></Header> : <LoggedInHeader></LoggedInHeader>}
@@ -204,15 +235,15 @@ export default function Dashboard() {
                 data={dataChartFive}
                 margin={{
                   top: 5,
-                  right: 30,
-                  left: 20,
+                  right: 0,
+                  left: 0,
                   bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="id" textAnchor= "middle" scaleToFit="true" verticalAnchor= "start"  interval={0} angle= "0" fontSize={"12px"}/>
                 <YAxis />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="number of records" fill="#5c94ed" />
               </StyledBarChart>
@@ -228,15 +259,15 @@ export default function Dashboard() {
                 data={dataChartSeven}
                 margin={{
                   top: 5,
-                  right: 30,
-                  left: 20,
+                  right: 0,
+                  left: 0,
                   bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="id" textAnchor= "middle" scaleToFit="true" verticalAnchor= "start"  interval={0} angle= "0" fontSize={"12px"}/>
                 <YAxis tickCount={3}/>
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="number of records" fill="#5c94ed" />
               </StyledBarChart>
@@ -257,15 +288,15 @@ export default function Dashboard() {
                 data={dataChartSix}
                 margin={{
                   top: 5,
-                  right: 30,
-                  left: 20,
+                  right: 0,
+                  left: 0,
                   bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="id" textAnchor= "middle" scaleToFit="true" verticalAnchor= "start"  interval={0} angle= "0" fontSize={"12px"}/>
                 <YAxis type="number" domain={[0, 5]} tickCount={6}/>
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="average rating score" fill="#f5b064" />
               </StyledBarChart>
@@ -281,15 +312,15 @@ export default function Dashboard() {
                 data={dataChartEight}
                 margin={{
                   top: 5,
-                  right: 30,
-                  left: 20,
+                  right: 0,
+                  left: 0,
                   bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="id" textAnchor= "middle" scaleToFit="true" verticalAnchor= "start"  interval={0} angle= "0" fontSize={"12px"}/>
                 <YAxis type="number" domain={[0, 5]} tickCount={6}/>
-                <Tooltip/>
+                <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="average rating score" fill="#f5b064" />
               </StyledBarChart>
