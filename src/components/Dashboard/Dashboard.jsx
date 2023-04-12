@@ -187,7 +187,7 @@ export default function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="number of records" fill="#8884d8" />
+                <Bar dataKey="number of records" fill="#5c94ed" />
               </StyledBarChart>
           </PopularityAndRatingChartContainer>
         }
@@ -211,7 +211,7 @@ export default function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="number of records" fill="#8884d8" />
+                <Bar dataKey="number of records" fill="#5c94ed" />
               </StyledBarChart>
           </PopularityAndRatingChartContainer>
         }
@@ -240,7 +240,7 @@ export default function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="average rating score" fill="#8884d8" />
+                <Bar dataKey="average rating score" fill="#f5b064" />
               </StyledBarChart>
           </PopularityAndRatingChartContainer>
         }
@@ -264,7 +264,7 @@ export default function Dashboard() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="average rating score" fill="#8884d8" />
+                <Bar dataKey="average rating score" fill="#f5b064" />
               </StyledBarChart>
           </PopularityAndRatingChartContainer>
         }
