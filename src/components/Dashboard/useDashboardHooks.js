@@ -42,6 +42,8 @@ const useDashboardHooks = (user) => {
     const [dataChartSeven, setDataChartSeven] = useState([]);
     const [dataChartEight, setDataChartEight] = useState([]);
 
+    const[selectedMonth, setSelectedMonth] = useState(new Date().getMonth()+1)
+
     useEffect(() => {
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
         .then(response => {
@@ -62,7 +64,7 @@ const useDashboardHooks = (user) => {
                 let orderYear = r.dateOfOrder.split("T")[0].split("-")[0]
                 let orderMonth = Math.floor(r.dateOfOrder.split("T")[0].split("-")[1])
 
-                if (orderYear == currentYear && orderMonth == currentMonth) {
+                if (orderYear == currentYear && orderMonth == selectedMonth) {
 
                     let currentDate = Math.floor(r.dateOfOrder.split("T")[0].split("-")[2])
                 
@@ -91,7 +93,7 @@ const useDashboardHooks = (user) => {
                 let orderYear = r.dateOfOrder.split("T")[0].split("-")[0]
                 let orderMonth = Math.floor(r.dateOfOrder.split("T")[0].split("-")[1])
 
-                if (orderYear == currentYear && orderMonth == currentMonth) {
+                if (orderYear == currentYear && orderMonth == selectedMonth) {
                     let productCat = r.product.category
                     if (!category.has(productCat)) {
                         category.set(productCat, r.totalPrice)
@@ -121,7 +123,7 @@ const useDashboardHooks = (user) => {
                 let orderYear = r.dateOfOrder.split("T")[0].split("-")[0]
                 let orderMonth = Math.floor(r.dateOfOrder.split("T")[0].split("-")[1])
 
-                if (orderYear == currentYear && orderMonth == currentMonth) {
+                if (orderYear == currentYear && orderMonth == selectedMonth) {
                     let recordStatus = r.orderStatus
                     if (!status.has(recordStatus)) {
                         status.set(recordStatus, 1)
@@ -148,7 +150,7 @@ const useDashboardHooks = (user) => {
                 let orderYear = r.dateOfOrder.split("T")[0].split("-")[0]
                 let orderMonth = Math.floor(r.dateOfOrder.split("T")[0].split("-")[1])
 
-                if (orderYear == currentYear && orderMonth == currentMonth) {
+                if (orderYear == currentYear && orderMonth == selectedMonth) {
                     let productId = r.product.productId
                     let productName = r.product.name
                     if (!products.has(productId)) {
@@ -184,7 +186,7 @@ const useDashboardHooks = (user) => {
                 let orderYear = r.dateOfOrder.split("T")[0].split("-")[0]
                 let orderMonth = Math.floor(r.dateOfOrder.split("T")[0].split("-")[1])
 
-                if (orderYear == currentYear && orderMonth == currentMonth) {
+                if (orderYear == currentYear && orderMonth == selectedMonth) {
                     let productId = r.product.productId
                     let productName = r.product.name
                     let score = r.product.ratingScore / r.product.numRatings
@@ -258,11 +260,11 @@ const useDashboardHooks = (user) => {
         .finally (
             setLoading(false)
         )
-    }, [user, refresh]);
+    }, [user, refresh, selectedMonth]);
 
     return { 
         data, displayData, dataChartOne, dataChartTwo, dataChartThree, dataChartFour,
-        dataChartFive, dataChartSix, dataChartSeven, dataChartEight
+        dataChartFive, dataChartSix, dataChartSeven, dataChartEight, selectedMonth, setSelectedMonth, toggleRefresh
     } 
 }
 

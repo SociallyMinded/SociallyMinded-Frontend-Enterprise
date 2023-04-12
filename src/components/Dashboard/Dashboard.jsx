@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import styled from "styled-components";
 import useDashboardHooks from "./useDashboardHooks";
+import Dropdown from 'react-bootstrap/Dropdown';
 
 
 const determineMonth = (monthNumeric) => {
@@ -69,7 +70,8 @@ export default function Dashboard() {
     searchByProductName, searchPrompts, handleSearchQuery, 
     displayData, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
     setShowOrderModal, handleClose, performFilter, dataChartOne , dataChartTwo, dataChartThree,
-    dataChartFour, dataChartFive, dataChartSix, dataChartSeven, dataChartEight
+    dataChartFour, dataChartFive, dataChartSix, dataChartSeven, dataChartEight,
+    selectedMonth, setSelectedMonth, toggleRefresh
   } = useDashboardHooks(user);
 
 
@@ -90,13 +92,37 @@ export default function Dashboard() {
     );
   };
 
-  console.log(dataChartSix)
+  console.log(selectedMonth)
 
   return (
     <PageTemplate>
       {user == null ? <Header></Header> : <LoggedInHeader></LoggedInHeader>}
       <ChartContainer>
-        <DashboardTitle>Analytics for {determineMonth(new Date().getMonth())}, {new Date().getFullYear()}</DashboardTitle>
+        <DashboardTitle>Sales & Orders Analytics for {new Date().getFullYear()}</DashboardTitle>
+        
+        <Dropdown>
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        Current Month : {determineMonth(selectedMonth-1)}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        <Dropdown.Item onClick={() => {
+          setSelectedMonth(1)
+        }}>Jan</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(2)}>Feb</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(3)}>March</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(4)}>Apr</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(5)}>May</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(6)}>Jun</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(7)}>July</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(8)}>Aug</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(9)}>Sept</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(10)}>Oct</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(11)}>Nov</Dropdown.Item>
+        <Dropdown.Item onClick={() => setSelectedMonth(12)}>Dec</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+        
         {dataChartOne != {} &&
           <>
           <ChartTitle>Total Sales Revenue</ChartTitle>
