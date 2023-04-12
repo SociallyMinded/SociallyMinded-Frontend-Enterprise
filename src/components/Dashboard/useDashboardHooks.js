@@ -5,6 +5,27 @@ import axios from 'axios'
 import { useEffect } from "react"
 import { UserAuth } from "../../context/AuthContext"
 
+function productPopularityComparator(a, b) {
+    if (a["number of records"] < b["number of records"]) {
+      return 1;
+    }
+    if (a["number of records"] > b["number of records"]) {
+      return -1;
+    }
+    return 0;
+}
+
+function productRatingComparator(a, b) {
+    if (Math.floor(a["average rating score"]) < Math.floor(b["average rating score"])) {
+      return 1;
+    }
+    if (Math.floor(a["average rating score"]) > Math.floor(b["average rating score"])) {
+      return -1;
+    }
+    return 0;
+}
+
+
 const useDashboardHooks = (user) => {
     const [data, setData] = useState(null)
     const [displayData, setDisplayData] = useState(null)
@@ -16,6 +37,8 @@ const useDashboardHooks = (user) => {
     const [dataChartTwo, setDataChartTwo] = useState([]);
     const [dataChartThree, setDataChartThree] = useState([]);
     const [dataChartFour, setDataChartFour] = useState([]);
+    const [dataChartFive, setDataChartFive] = useState([]);
+    const [dataChartSix, setDataChartSix] = useState([]);
 
     useEffect(() => {
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
@@ -118,50 +141,73 @@ const useDashboardHooks = (user) => {
 
             setDataChartThree(cleanedStatuses)
 
-            let statusSankey = new Map();
-            statusSankey.set("Pending Approval", 0)
-            statusSankey.set("In Delivery", 0)
-            statusSankey.set("Order Received", 0)
+            let products = new Map();
             records.forEach(r => {
                 let orderYear = r.dateOfOrder.split("T")[0].split("-")[0]
                 let orderMonth = Math.floor(r.dateOfOrder.split("T")[0].split("-")[1])
 
                 if (orderYear == currentYear && orderMonth == currentMonth) {
-                    let recordStatus = r.orderStatus
-                    if (!statusSankey.has(recordStatus)) {
-                        statusSankey.set(recordStatus, 1)
+                    let productId = r.product.productId
+                    let productName = r.product.name
+                    if (!products.has(productId)) {
+                        products.set(productId, [productName, 1])
                     } else {
-                        let totalrecords = statusSankey.get(recordStatus)
-                        statusSankey.set(recordStatus, totalrecords + 1)
+                        let totalproducts = products.get(productId)
+                        totalproducts[1] += 1
+                        products.set(productId, totalproducts)
                     }
                 }
             })
 
-            if (statusSankey.get("Pending Approval") > 0 && statusSankey.get("In Delivery")  > 0 &&  statusSankey.get("Order Received") > 0) {
-                let cleanedStatusesSankey = []
-                Array.from(statusSankey.entries()).map(([key, val]) =>{
-                    let recordStructure = {
-                        "status": key,
-                        "number of records": val
-                    }
-                    cleanedStatusesSankey.push(recordStructure)
-                })
-
-                const linksPAToID = {
-                    "source":0,
-                    "target":1,
-                    "value":statusSankey.get("In Delivery") != undefined && Math.abs(statusSankey.get("In Delivery"))
+            let cleanedProducts = []
+            Array.from(products.entries()).map(([key, val]) =>{
+                let productStructure = {
+                    "id": key,
+                    "number of records": val[1],
+                    "name": val[0]
                 }
-                const linkIDToOC = {
-                    "source":0,
-                    "target":2,
-                    "value":statusSankey.get("Order Received") != undefined && Math.abs(statusSankey.get("Order Received"))
-                }
-        
-                setDataChartFour([linksPAToID, linkIDToOC])
+                cleanedProducts.push(productStructure)
+            })
+            cleanedProducts.sort(productPopularityComparator)
+            setDataChartFive(cleanedProducts.slice(0,5))
+            
 
-            }
-           
+
+            let productRatings = new Map();
+            records.forEach(r => {
+                let orderYear = r.dateOfOrder.split("T")[0].split("-")[0]
+                let orderMonth = Math.floor(r.dateOfOrder.split("T")[0].split("-")[1])
+
+                if (orderYear == currentYear && orderMonth == currentMonth) {
+                    let productId = r.product.productId
+                    let productName = r.product.name
+                    if (!productRatings.has(productId)) {
+                        productRatings.set(productId, [productName, r.product.ratingScore])
+                    } 
+                }
+            })
+
+
+            let cleanedProductRatings = []
+            Array.from(productRatings.entries()).map(([key, val]) =>{
+                let productRatingStructure = {
+                    "id": key,
+                    "average rating score": val[1],
+                    "name": val[0]
+                }
+                cleanedProductRatings.push(productRatingStructure)
+            })
+            cleanedProductRatings.sort(productRatingComparator)
+            setDataChartSix(cleanedProductRatings.slice(0,5))
+            
+
+
+
+
+            
+
+
+
 
         })
         .catch ((error) => {
@@ -173,7 +219,8 @@ const useDashboardHooks = (user) => {
     }, [user, refresh]);
 
     return { 
-        data, displayData, dataChartOne, dataChartTwo, dataChartThree, dataChartFour
+        data, displayData, dataChartOne, dataChartTwo, dataChartThree, dataChartFour,
+        dataChartFive, dataChartSix
     } 
 }
 

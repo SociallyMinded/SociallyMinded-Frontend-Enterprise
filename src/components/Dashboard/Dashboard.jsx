@@ -61,33 +61,6 @@ const determineMonth = (monthNumeric) => {
 }
 
 
-
-const data0 = {
-  "nodes": [
-    {
-      "name": "Pending Approval"
-    },
-    {
-      "name": "In Delivery"
-    },
-    {
-      "name": "Order Received"
-    }
-  ],
-  "links": [
-    {
-      "source": 0,
-      "target": 1,
-      "value": 3728.3
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "value": 1000
-    }
-  ]
-};
-    
 export default function Dashboard() {
   const { user } = UserAuth();
 
@@ -97,11 +70,11 @@ export default function Dashboard() {
     searchByProductName, searchPrompts, handleSearchQuery, 
     displayData, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
     setShowOrderModal, handleClose, performFilter, dataChartOne , dataChartTwo, dataChartThree,
-    dataChartFour
+    dataChartFour, dataChartFive, dataChartSix
   } = useDashboardHooks(user);
 
 
-  console.log(data)
+  console.log(dataChartFive)
 
   const COLORS = ['#0088FE', '#FF8042', '#00C49F', '#FFBB28']
 
@@ -118,14 +91,8 @@ export default function Dashboard() {
     );
   };
 
+  console.log(dataChartSix)
 
-  if (dataChartFour != []) {
-    console.log(dataChartFour)
-    data0.links = dataChartFour
-    console.log(data0)
-  }
-  
- console.log(dataChartFour)
 
   return (
     <PageTemplate>
@@ -203,37 +170,18 @@ export default function Dashboard() {
           }
       </GraphSectionTwo>
       <GraphSectionThree>
-        {dataChartFour.length > 0 &&
-          <>
-          <ChartTitle>Progression of order records delivery status</ChartTitle>
-            <Sankey
-              width={960}
-              height={500}
-              data={data0}
-              nodePadding={50}
-              margin={{
-                left: 100,
-                right: 100,
-                top: 20,
-                bottom: 100,
-              }}
-            link={{ stroke: '#77c878' }}
-          >
-            <Tooltip />
-          </Sankey>
-          </>
-      }
 
+     
       </GraphSectionThree>
 
 
-      {dataChartOne != {} &&
+      {dataChartFour != {} &&
           <>
-          <ChartTitle>Total Sales Revenue</ChartTitle>
+          <ChartTitle>Top 5 Most Popular Products</ChartTitle>
             <StyledBarChart
                 width={1000}
                 height={400}
-                data={dataChartOne}
+                data={dataChartFive}
                 margin={{
                   top: 5,
                   right: 30,
@@ -242,11 +190,35 @@ export default function Dashboard() {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
+                <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="total sales" fill="#8884d8" />
+                <Bar dataKey="number of records" fill="#8884d8" />
+              </StyledBarChart>
+          </>
+        }
+
+      {dataChartSix != {} &&
+          <>
+          <ChartTitle>Top 5 Products with highest rating</ChartTitle>
+            <StyledBarChart
+                width={1000}
+                height={400}
+                data={dataChartSix}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="average rating score" fill="#8884d8" />
               </StyledBarChart>
           </>
         }
