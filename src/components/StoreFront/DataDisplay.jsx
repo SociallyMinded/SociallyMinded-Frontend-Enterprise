@@ -3,36 +3,148 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import { useState } from "react"
+import Form from 'react-bootstrap/Form';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export const DataDisplay = ({data}) => {
-    console.log(data)
+
+    console.log(data.displayData)
+
+    const [selectedOrder, setSelectedOrder] = useState("");
+
     return (
         <StyledRow lg={5} md={4}>
             {data.displayData != null && data.displayData.map((d) => (
                 <StyledCol md={3}>
-                    
-                <StyledLink id="styled-card-link" to="/product_listing" state={{ d }}>
-                    
-                    <StyledCard>
-                    <StyledImg variant="top" src={require('./donut.png')} />
-                    <StyledCardHeader>
-                        Order ID: {d.orderRecordId}
-                    </StyledCardHeader>
-                    <StyledCardSubtitle className="mb-2 text-muted">
-                        {d.dateOfOrder}
-                    </StyledCardSubtitle>                   
-                        <StyledCardBody>
-                            <Card.Title>{d.orderTitle}</Card.Title>
-                            <Card.Title>${d.totalPrice}</Card.Title>
-                        </StyledCardBody>
-                    </StyledCard>
+                <StyledLink id="styled-card-link"  to={'/order_details/'+ d.orderRecordId } state={{ d }}>
+
+                <StyledCard onClick={() => {
+                    data.setShowOrderModal(true)
+                    setSelectedOrder(d)
+                
+                }}>
+                    <StyledCardTitleHeader>Order {d.orderRecordId}</StyledCardTitleHeader>
+                    <StyledImg variant="top" src={d.product.imageLink[0]} />
+                    <StyledCardBody>
+                            <StyledCardTitle>{d.orderTitle}</StyledCardTitle>
+                            <StyledCardTitle>{d.dateOfOrder.split("T")[0]}</StyledCardTitle>
+                            <StyledCardSubTitle>
+                                {d.orderStatus == "Pending Approval" && <PAHighlightedText>{d.orderStatus}</PAHighlightedText>}
+                                {d.orderStatus == "In Delivery" && <IDHighlightedText>{d.orderStatus}</IDHighlightedText>}
+                                {d.orderStatus == "Order Received" && <ORHighlightedText>{d.orderStatus}</ORHighlightedText>}
+                            </StyledCardSubTitle>
+                    </StyledCardBody>
+                </StyledCard>
                 </StyledLink>
                 </StyledCol>
             ))}
             {data.displayData != null && data.displayData.length == 0 && <StyledText>There are no orders to display</StyledText>}
+
+            {/* {data.showOrderModal && <>
+                <Modal
+                    show={data.showOrderModal}
+                    onHide={data.handleClose}
+                    keyboard={false}
+                >
+                <Modal.Header>
+                    <Modal.Title>Order Id {selectedOrder.orderRecordId}</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    Order Title
+                    <Form.Control placeholder={selectedOrder.orderTitle} disabled />
+                </Modal.Body>
+
+                <Modal.Body>
+                    Order Date
+                    <Form.Control placeholder={selectedOrder.dateOfOrder.split("T")[0]} disabled />
+                </Modal.Body>
+
+                <Modal.Body>
+                    Order Details
+                    <Form.Control as="textarea" placeholder={selectedOrder.orderDetails} disabled />
+                </Modal.Body>
+
+                <Modal.Body>
+                    Order Status
+                    <Form.Control placeholder={selectedOrder.orderStatus} disabled />
+                </Modal.Body>   
+
+                <Modal.Body>
+                    Customer Email
+                    <Form.Control placeholder={selectedOrder.customer.email} disabled />
+                </Modal.Body>
+
+                <Modal.Body>
+                    Customer Address
+                    <Form.Control as="textarea" placeholder={selectedOrder.address} disabled />
+                </Modal.Body>
+
+
+                <Modal.Footer>
+                    {selectedOrder.orderStatus != "Order Received" && <Button variant="primary" onClick={() => data.updatedOrderStatus(selectedOrder)}>Update Status To In Delivery</Button>}
+                    {selectedOrder.orderStatus == "Order Received" && <Button variant="primary" disabled onClick={() => data.updatedOrderStatus(selectedOrder)}>Update Status To In Delivery</Button>}
+                    <Button variant="secondary" onClick={() => data.setShowOrderModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+                </Modal>
+                </>} */}
+
         </StyledRow>
     )
 }
+
+const PAHighlightedText = styled.p`
+    background-color:#ffd9de;
+    border-radius:5px;
+    padding-left:0.5em;
+    padding-right:0.5em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+`
+const IDHighlightedText = styled.p`
+    background-color:#ffedc7;
+    border-radius:5px;
+    padding-left:0.5em;
+    padding-right:0.5em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+`
+
+const ORHighlightedText = styled.p`
+    background-color:#cbf5d8;
+    border-radius:5px;
+    padding-left:0.5em;
+    padding-right:0.5em;
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+`
+
+const StyledButton = styled(Button)`
+    width:100%;
+`
+
+const StyledCardTitleHeader = styled.div`
+    font-weight:bold;
+    font-size:1.2em;
+    margin-top:0.5vw;
+    margin-bottom:0.5vw;
+    margin-left:1vw;
+`
+
+const StyledCardSubTitle = styled.p`
+    display:flex;
+    flex-direction:row;
+    margin-top:2vh;
+`
+
+const StyledCardTitle = styled.div`
+    font-weight:bold;
+`
 
 const StyledCardHeader = styled(Card.Header)`
     background-color:white;
@@ -43,7 +155,6 @@ const StyledCardHeader = styled(Card.Header)`
 const StyledCardSubtitle = styled(Card.Subtitle)`
     background-color:white;
     border-width:0px;
-
 `
 
 const StyledRow = styled(Row)`
@@ -54,7 +165,6 @@ const StyledRow = styled(Row)`
 
 const StyledCol = styled(Col)`
     margin-top:2%;
-    max-height:80vh;
 `
 
 const StyledLink = styled(Link)`
@@ -78,7 +188,6 @@ const StyledCard = styled(Card)`
     border: 2px solid rgba(121, 173, 209, 0.4);
     align: center;
     
-  
     &:hover {
         transition: all 0.2s ease-out;
         box-shadow: 0px 4px 8px rgba(121, 173, 209, 0.4);
@@ -103,24 +212,21 @@ const StyledCard = styled(Card)`
 
 const StyledCardBody = styled(Card.Body)`
     display: flex;
-    flex-direction: row;
-    align-items:center;
-    justify-content: space-between;
+    flex-direction: column;
+    max-width:100%;
+    text-overflow:ellipsis;
+    height:20vh;
 `
 
 const StyledText = styled.p`
     width:100%;
     font-size:1.5em;
     margin-top:2%;
+    margin-left:1.5vw;
 `
 
 const StyledImg = styled(Card.Img)`
   border-width:0px;
-  width: 180px;
-  height: 160px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-
-  
+  width: 100%;
+  height: 25vh;
 `

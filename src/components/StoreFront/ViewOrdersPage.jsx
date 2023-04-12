@@ -7,16 +7,20 @@ import { PromptResults } from "./PromptResults";
 import useLoginHooks from "../Login/loginHooks";
 import Header from "../common/Header/Header"; 
 import { UserAuth } from "../../context/AuthContext";
+import axios from "axios";
+import { getAllOrdersByEnterpriseFirebaseUid, updateOrderUrl } from "../../routes/routes"
+import { ViewOrderDetails } from "./ViewOrderDetails";
+import { Link } from "react-router-dom";
 
 const ViewOrdersPage = () => {
+    const { user } = UserAuth()
+
     const {         
         searchQuery, data, loading,
         searchByProductName, searchPrompts, handleSearchQuery, 
-        displayData, showSearchPrompts, performSearch
-        
-    } = useViewOrderHooks();
-
-    const { user } = UserAuth()
+        displayData, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
+        setShowOrderModal, handleClose, performFilter        
+    } = useViewOrderHooks(user);
 
     return (
         <PageTemplate>   
@@ -24,9 +28,12 @@ const ViewOrdersPage = () => {
             <div>
                 <SearchInput 
                     data={{
+                        user:user,
+                        displayData:displayData,
                         searchByProductName: searchByProductName,
                         searchQuery: searchQuery,
-                        performSearch: performSearch
+                        performSearch: performSearch,
+                        performFilter: performFilter
                     }}
                 />
 
@@ -39,9 +46,13 @@ const ViewOrdersPage = () => {
                 />
 
                 <DataDisplay 
-                    data={{ displayData: displayData }}
+                    data={{ 
+                        displayData: displayData,
+                        updatedOrderStatus: updatedOrderStatus,
+                        showOrderModal: showOrderModal,
+                        setShowOrderModal: setShowOrderModal
+                    }}
                 />
-
             </div>
         </PageTemplate>
     )

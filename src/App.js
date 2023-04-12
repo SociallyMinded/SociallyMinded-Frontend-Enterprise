@@ -11,7 +11,7 @@ import ViewOrdersPage from "./components/StoreFront/ViewOrdersPage";
 import Listing from "./components/Listing/Listing.jsx";
 import ViewListing from "./components/Listing/ViewListing.jsx";
 import Dashboard from "./components/Dashboard/Dashboard";
-
+import ViewOrderDetails from "./components/StoreFront/ViewOrderDetails";
 function App() {
   return (
     <div>
@@ -27,6 +27,7 @@ function App() {
             <Route path="/view_listing" element={<ViewListing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/view_orders" element={<ViewOrdersPage />}/>
+            <Route path='/order_details/:orderRecordId' element={<ViewOrderDetails/>}/>
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>

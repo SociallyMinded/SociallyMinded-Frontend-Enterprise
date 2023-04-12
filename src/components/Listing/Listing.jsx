@@ -16,6 +16,7 @@ import { DropdownButton, ModalBody } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Actions } from "./productListingHooks.js";
 import "./productListing.css";
+import { useEffect } from "react";
 
 const Listing = () => {
   const { state } = useLocation();
@@ -56,18 +57,11 @@ const Listing = () => {
     showConfirmDeleteModal,
     handleCloseConfirmDeleteModal,
     editFile,
+    validated,
+    handleSubmit,
+    selectedFiles,
+    showImageUploadError,
   } = useProductListingHooks();
-
-  const [validated, setValidated] = useState(false);
-
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
-  };
 
   return (
     <PageTemplate>
@@ -76,7 +70,11 @@ const Listing = () => {
         <Subheader>Products</Subheader>
         <SearchBox>
           <FaSearch />
-          <input type="text" class="form-control ml-2" placeholder="Search" />
+          <input
+            type="text"
+            className="form-control ml-2"
+            placeholder="Search"
+          />
         </SearchBox>
         <AddButton onClick={handleShowAddProductModal}>Add</AddButton>
       </ProductListingHeaderContainer>
@@ -125,7 +123,7 @@ const Listing = () => {
                 </ProductListingImgHeaderContainer>
                 <ProductListingImg
                   src={data.imageLink[0]}
-                  alt="product picture"
+                  alt="Product Picture"
                 />
               </ProductListingImgContainer>
             ))}
@@ -139,33 +137,31 @@ const Listing = () => {
             <Modal.Title>Add Product</Modal.Title>
             <button
               type="button"
-              class="close"
+              className="close"
               onClick={handleCloseAddProductModal}
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </Modal.Header>
+
           <Modal.Body>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
+              <Form.Group className="mb-3" controlId="validationCustom03">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
-                  autoFocus
                   required
+                  autoFocus
                   maxLength="25"
                   value={productName}
                   onChange={handleProductName}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid">
-                  A name is required.
+                  Please provide a product name
                 </Form.Control.Feedback>
               </Form.Group>
-            </Form>
-            <Form>
+
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
@@ -178,11 +174,11 @@ const Listing = () => {
                   onChange={handleProductPrice}
                 />
                 <Form.Control.Feedback type="invalid">
-                  A price is required.
+                  Please provide a price
                 </Form.Control.Feedback>
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </Form.Group>
-            </Form>
-            <Form>
+
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
@@ -196,45 +192,57 @@ const Listing = () => {
                   onChange={handleProductDescription}
                 />
                 <Form.Control.Feedback type="invalid">
-                  A description is required.
+                  Please provide a product description
                 </Form.Control.Feedback>
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </Form.Group>
-            </Form>
-            <Form>
+
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Image</Form.Label>
-                <input
-                  className="ml-3"
-                  id="uploadImage"
-                  type="file"
-                  required
-                  onChange={handleFileChange}
-                />
+                <Form.Label>Image (Max 5)</Form.Label>
+                {selectedFiles.length < 5 ? (
+                  <input
+                    className="ml-3"
+                    id="uploadImage"
+                    type="file"
+                    required
+                    onChange={handleFileChange}
+                  />
+                ) : (
+                  <input
+                    className="ml-3"
+                    id="uploadImage"
+                    type="file"
+                    disabled
+                  />
+                )}
+                {showImageUploadError && (
+                  <ImageUploadErrorText>
+                    Please upload at least 1 image
+                  </ImageUploadErrorText>
+                )}
               </Form.Group>
-            </Form>
-            <Form>
+
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>Category</Form.Label>
                 <Form.Select className="ml-3" onChange={handleProductCategory}>
-                  <option value="Craft">Craft</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Food">Food</option>
-                  <option value="Others">Others</option>
+                  <option value="CRAFT">Craft</option>
+                  <option value="CLOTHING">Clothing</option>
+                  <option value="FOOD">Food</option>
+                  <option value="OTHERS">Others</option>
                 </Form.Select>
               </Form.Group>
+
+              <Button type="submit" variant="primary" className="float-right">
+                Add
+              </Button>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button type="submit" variant="primary" onClick={createNewProduct}>
-              Add
-            </Button>
-          </Modal.Footer>
         </Modal>
 
         <Modal
@@ -246,7 +254,7 @@ const Listing = () => {
             <Modal.Title>Edit Product</Modal.Title>
             <button
               type="button"
-              class="close"
+              className="close"
               onClick={handleCloseEditProductModal}
             >
               <span aria-hidden="true">&times;</span>
@@ -300,13 +308,22 @@ const Listing = () => {
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Image</Form.Label>
-                <input
-                  className="ml-3"
-                  id="uploadImage"
-                  type="file"
-                  onChange={handleFileChange}
-                />
+                <Form.Label>Image (Max 5)</Form.Label>
+                {selectedFiles.length < 5 ? (
+                  <input
+                    className="ml-3"
+                    id="uploadImage"
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                ) : (
+                  <input
+                    className="ml-3"
+                    disabled
+                    id="uploadImage"
+                    type="file"
+                  />
+                )}
               </Form.Group>
             </Form>
             <Form>
@@ -345,7 +362,7 @@ const Listing = () => {
               <Modal.Title>Confirm Edit</Modal.Title>
               <button
                 type="button"
-                class="close"
+                className="close"
                 onClick={handleCloseConfirmEditModal}
               >
                 <span aria-hidden="true">&times;</span>
@@ -388,7 +405,11 @@ const Listing = () => {
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label>Image</Form.Label>
-                  <Form.Control type="text" value={editFile} disabled />
+                  <Form.Control
+                    type="text"
+                    value={editFile.toString()}
+                    disabled
+                  />
                 </Form.Group>
               </Form>
               <Form>
@@ -444,6 +465,11 @@ const Listing = () => {
     </PageTemplate>
   );
 };
+
+const ImageUploadErrorText = styled.p`
+  font-size: 80%;
+  color: #dc3545;
+`;
 
 const AddButton = styled(Button)`
   height: 38px;

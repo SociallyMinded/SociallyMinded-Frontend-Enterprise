@@ -41,7 +41,7 @@ const useProductListingHooks = () => {
   const [editProductDescription, setEditProductDescription] = useState("");
   const handleEditProductDescription = (desc) =>
     setEditProductDescription(desc);
-  const [editFile, setEditFile] = useState("");
+  const [editFile, setEditFile] = useState([]);
   const [editProductCategory, setEditProductCategory] = useState("");
   const handleEditProductCategory = (category) =>
     setEditProductCategory(category);
@@ -52,7 +52,7 @@ const useProductListingHooks = () => {
   const handleProductName = (e) => setProductName(e.target.value);
   const [productDescription, setProductDescription] = useState("");
   const handleProductDescription = (e) => setProductDescription(e.target.value);
-  const [productCategory, setProductCategory] = useState("");
+  const [productCategory, setProductCategory] = useState("CRAFTS");
   const handleProductCategory = (e) => setProductCategory(e.target.value);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const handleFileChange = (e) => {
@@ -63,8 +63,9 @@ const useProductListingHooks = () => {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       setSelectedFiles((prevSelectedFiles) => [...prevSelectedFiles, file]);
-      setEditFile(file.name);
+      setEditFile((prevFileName) => [...prevFileName, file.name]);
       urls.push(URL.createObjectURL(file));
+      setShowImageUploadError(false);
     }
     console.log(selectedFiles);
   };
@@ -106,50 +107,51 @@ const useProductListingHooks = () => {
     }
   };
 
-  /*const fetchProducts = async () => {
-    try {
-      await axios
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    setValidated(true);
+    createNewProduct(event);
+  };
+
+  useEffect(() => {
+    setProductName("");
+    setProductPrice("");
+    setProductDescription("");
+    setSelectedFiles([]);
+    setEditFile("");
+    setProductCategory("CRAFT");
+    setValidated(false);
+    setShowImageUploadError(false);
+    if (user != null) {
+      axios
         .get(getEnterpriseByFirebaseUid + user.uid)
         .then((response) => {
           setCurrentEnterprise(response.data);
           return axios.get(
-            getAllProductsByEnterpriseIdUrl +
-              currentEnterprise.socialEnterpriseId
+            getAllProductsByEnterpriseIdUrl + response.data.socialEnterpriseId
           );
         })
         .then((response) => {
           setData(response.data);
           setDisplayData(response.data);
-          console.log(currentEnterprise.socialEnterpriseId);
+          console.log(response.data.socialEnterpriseId);
           console.log(response.data);
+        })
+        .catch((error) => {
+          setError(error);
         });
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
     }
-  };*/
-
-  useEffect(() => {
-    axios
-      .get(getEnterpriseByFirebaseUid + user.uid)
-      .then((response) => {
-        setCurrentEnterprise(response.data);
-        return axios.get(
-          getAllProductsByEnterpriseIdUrl + response.data.socialEnterpriseId
-        );
-      })
-      .then((response) => {
-        setData(response.data);
-        setDisplayData(response.data);
-        console.log(currentEnterprise.socialEnterpriseId);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        setError(error);
-      });
-    //fetchProducts();
   }, [refreshPage, loading, user]);
+
+  const [showImageUploadError, setShowImageUploadError] = useState(false);
 
   const createNewProduct = async (e) => {
     if (user != null) {
@@ -173,34 +175,26 @@ const useProductListingHooks = () => {
             price: productPrice,
             description: productDescription,
             imageLink: imageBase64s,
-            category: productCategory,
+            category: productCategory == "" ? "CRAFT" : productCategory,
+            numRatings:0,
+            ratingScore:0
           },
         };
 
-        if (
-          productName == "" ||
-          productPrice < 0 ||
-          productDescription == "" ||
-          productCategory == ""
-        ) {
+        if (selectedFiles.length == 0) {
+          setShowImageUploadError(true);
           setShowAddProductModal(true);
         } else {
           axios
             .post(createNewProductUrl, newProduct)
             .then((response) => {
+              setShowAddProductModal(false);
               console.log(response);
             })
-            .catch((error) => setError(error))
+            .catch((error) => console.log(error))
             .finally((res) => {
-              setShowAddProductModal(false);
               setRefreshPage(!refreshPage);
             });
-          setProductName("");
-          setProductPrice("");
-          setProductDescription("");
-          setSelectedFiles([]);
-          setEditFile("");
-          setProductCategory("");
         }
       });
     } else {
@@ -343,6 +337,10 @@ const useProductListingHooks = () => {
     handleCloseConfirmDeleteModal,
     selectedFiles,
     editFile,
+    validated,
+    handleSubmit,
+    selectedFiles,
+    showImageUploadError,
   };
 };
 

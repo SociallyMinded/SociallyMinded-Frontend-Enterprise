@@ -4,6 +4,11 @@ export const handleLoginViaGmail =
   "http://localhost:8080/SociallyMinded-war/webresources/entity.socialenterprise/loginViaGmail/";
 export const getAllOrders =
   "http://localhost:8080/SociallyMinded-war/webresources/entity.orderrecord";
+
+// add enterprise firebase Uid at the end
+export const getAllOrdersByEnterpriseFirebaseUid =
+  "http://localhost:8080/SociallyMinded-war/webresources/entity.orderrecord/findOrderRecordsByEnterpriseFirebaseUid/";
+
 export const getAllProductsByEnterpriseIdUrl =
   "http://localhost:8080/SociallyMinded-war/webresources/entity.product/findProductsByEnterpriseId/";
 export const getEnterpriseByFirebaseUid =
@@ -16,6 +21,9 @@ export const deleteProductUrl =
   "http://localhost:8080/SociallyMinded-war/webresources/entity.product/";
 export const getAllReviewsByProductIdUrl =
   "http://localhost:8080/SociallyMinded-war/webresources/entity.review/findReviewsByProductId/";
+
+export const updateOrderUrl =
+  "http://localhost:8080/SociallyMinded-war/webresources/entity.orderrecord/";
 
 export const HOME_LINK = "/";
 export const SIGNUP_PAGE_LINK = "/signup";
