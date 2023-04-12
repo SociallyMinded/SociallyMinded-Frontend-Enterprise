@@ -31,6 +31,6 @@ const StyledPromptResultsContainer = styled.div`
   overflow-y: scroll;
   max-height: 30vh;
   z-index:2;
-  width:90%;
+  width:76%;
   box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
 `

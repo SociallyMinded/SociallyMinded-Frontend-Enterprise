@@ -1,90 +1,191 @@
 import styled from 'styled-components' 
-import Button from 'react-bootstrap/Button'; 
 import Form from 'react-bootstrap/Form'; 
 import InputGroup from 'react-bootstrap/InputGroup'; 
 import { DropdownButton } from "react-bootstrap"; 
- 
- 
-/*const SearchInputCategory = ({data}) => { 
-    return ( 
-        <Form> 
-            <StyledFormCheck  
-                type={'checkbox'} 
-                label={ProductCategoryLabels.CRAFTS} 
-                value={ProductCategories.CRAFTS} 
-                onClick={data.filterProductByCategory} 
-                defaultChecked={data.craftFilterClicked} 
-            /> 
-            <StyledFormCheck 
-                type={'checkbox'} 
-                label={ProductCategoryLabels.CLOTHING} 
-                value={ProductCategories.CLOTHING} 
-                onClick={data.filterProductByCategory} 
-                defaultChecked={data.clothingFilterClicked} 
-             
-            /> 
-            <StyledFormCheck 
-                type={'checkbox'} 
-                label={ProductCategoryLabels.FOOD} 
-                value={ProductCategories.FOOD} 
-                onClick={data.filterProductByCategory} 
-                defaultChecked={data.foodFilterClicked} 
-         
-            /> 
-            <StyledFormCheck 
-                type={'checkbox'} 
-                label={ProductCategoryLabels.OTHERS} 
-                value={ProductCategories.OTHERS} 
-                onClick={data.filterProductByCategory} 
-                defaultChecked={data.othersFilterClicked} 
-            /> 
-        </Form> 
-    ) 
-} */ 
- 
+import Button from 'react-bootstrap/Button';
+import { Dropdown } from 'react-bootstrap';
+import { useState } from 'react';
+import { CSVLink, CSVDownload } from "react-csv";
+
+const exportHeaders = [
+    { label: "Order Title", key: "orderTitle" },
+    { label: "Address", key: "address" },
+    { label: "Quantity", key: "quantity" },
+    { label: "Total Price", key: "totalPrice" },
+    { label: "Date of Order", key: "dateOfOrder" },
+    { label: "Order Status", key: "orderStatus" }
+];
+
 export const SearchInput = ({ data }) => { 
+
+    const [filterCriteria, setFilterCriteria] = useState("")
+
+
+    const [dataExport, setDataExport] = useState([])
+    const [showExportData, setShowExportData] = useState(true)
+    const handleShowExportData = () => setShowExportData(true)
+    const handleCloseExportDate = () => setShowExportData(false)
+
+    const [showDownloadData, setShowDownloadData] = useState(false)
+    //it save according to the filtered data.
+    const prepareDataForExport = () => {
+        var dataPrep = []
+        if (data.displayData != null) {
+            for (let i = 0; i < data.displayData.length; i++) {
+                const dataModel = {
+                    "orderTitle": data.displayData[i].orderTitle,
+                    "address": data.displayData[i].address,
+                    "quantity": data.displayData[i].quantity,
+                    "totalPrice": data.displayData[i].totalPrice,
+                    "dateOfOrder": data.displayData[i].dateOfOrder,
+                    "orderStatus": data.displayData[i].orderStatus
+                }
+                dataPrep.push(dataModel)
+            }
+        } 
+        setDataExport(dataPrep)
+        setShowDownloadData(true)
+        setShowExportData(false)
+    }
+    
+    const handleDownloadData = () => {
+        setShowDownloadData(false)
+        setShowExportData(true)
+    }
+    const [orderStatus, setOrderStatus] = useState("All");
+    const [searchQuery, setSearchQuery] = useState("");
+
     return ( 
           <StyledContainer> 
-            <StyledInputGroup className="mb-3"> 
+            <StyledInputGroup> 
                 <StyledFormControl  
                     placeholder="Search Order ID" 
                     aria-describedby="basic-addon2" 
                     onChange={data.searchByProductName} 
                     value={data.searchQuery} 
                 /> 
-                <Button style={{ position: "absolute" }} class="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3" onClick={data.performSearch}> 
-                    <span class="glyphicon glyphicon-search"></span> 
-                </Button> 
+                <Button variant="primary" onClick={data.performSearch}>Search</Button>
+                <>
+                    {showExportData && <StyledButton onClick={prepareDataForExport}>Export Data</StyledButton>}
+                    {showDownloadData && <StyledButton onClick={handleDownloadData}>
+                        <StyledCSVLink 
+                            data={dataExport != null && dataExport} 
+                            headers={exportHeaders}
+                            filename={`Order_Records_${new Date()}`}
+                            extension=".csv"
+                        >                
+                            Download Order Records
+                        </StyledCSVLink>
+                    </StyledButton>}
+                </>
+
+                <StyledDropdownContainer>
+                    <StyledDropdown variant="primary" id="dropdown-basic">
+                        {filterCriteria == "" && <p>Filter By Order Status</p>}
+                        {filterCriteria != "" && <p>{filterCriteria}</p>}
+                    </StyledDropdown>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("Pending Approval")
+                            data.performFilter("Pending Approval")
+
+                        }}>
+                            Pending Approval
+                        </Dropdown.Item>
+
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("In Delivery")
+                            data.performFilter("In Delivery")
+                        }}>
+                            In Delivery
+                        </Dropdown.Item>
+
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("Order Received")
+                            data.performFilter("Order Received")
+                        }}>
+                            Order Received
+                        </Dropdown.Item>
+
+                        <Dropdown.Item onClick={() => {
+                            setFilterCriteria("All Orders")
+                            data.performFilter("All Orders")
+                        }}>
+                            All Orders
+                        </Dropdown.Item>
+
+                    </Dropdown.Menu>
+                </StyledDropdownContainer>
             </StyledInputGroup> 
          </StyledContainer> 
  
     ) 
 } 
+
+const StyledButton = styled(Button)`
+    margin-left:1vw;
+`
  
+const StyledDropdownContainer = styled(Dropdown)`
+`
+
+const StyledDropdown = styled(Dropdown.Toggle)`
+    background-color:#14A44D;
+    color:white;
+    margin-left:1vw;
+    height:110%;
+
+    &:hover{
+        background-color:#14A44D;
+        color:white;
+    }
+
+    &:after{
+        background-color:#14A44D;
+        color:white;
+    }
+
+`
+
 const StyledContainer = styled.div`
     flex-direction: row 
 `
   
- 
- 
 const StyledInputGroup = styled(InputGroup)`
     margin-top:7vh; 
-    width: 80%; 
+    width: 100%; 
+    height:5vh;
+    max-height:5vh;
     flex-direction: row; 
-    justify-content: center;        
+    justify-content: center;    
 `
     
  
 const StyledFormControl = styled(Form.Control)`
-    width: 80%; 
     margin-right: 0; 
-    padding-right: 0; 
+    padding-right: 0;
+    height:5vh;
+
 `
-    
-   
      
- 
 const StyledFormCheck = styled(Form.Check)`
     padding-left:3vw;
 `
   
+const StyledCSVLink = styled(CSVLink)`
+    text-decoration: none !important;
+    color:white;
+    &:hover {
+        text-decoration: none !important;
+        color:white;
+    }
+    &:after {
+        text-decoration: none !important;
+        color:white;
+    }
+    &:before {
+        text-decoration: none !important;
+        color:white;
+    }
+`

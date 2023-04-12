@@ -182,6 +182,8 @@ const useProductListingHooks = () => {
             description: productDescription,
             imageLink: imageBase64s,
             category: productCategory == "" ? "CRAFT" : productCategory,
+            numRatings:0,
+            ratingScore:0
           },
         };
 
