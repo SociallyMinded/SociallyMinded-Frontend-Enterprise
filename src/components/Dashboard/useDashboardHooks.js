@@ -39,6 +39,8 @@ const useDashboardHooks = (user) => {
     const [dataChartFour, setDataChartFour] = useState([]);
     const [dataChartFive, setDataChartFive] = useState([]);
     const [dataChartSix, setDataChartSix] = useState([]);
+    const [dataChartSeven, setDataChartSeven] = useState([]);
+    const [dataChartEight, setDataChartEight] = useState([]);
 
     useEffect(() => {
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
@@ -159,6 +161,7 @@ const useDashboardHooks = (user) => {
                 }
             })
 
+
             let cleanedProducts = []
             Array.from(products.entries()).map(([key, val]) =>{
                 let productStructure = {
@@ -168,10 +171,13 @@ const useDashboardHooks = (user) => {
                 }
                 cleanedProducts.push(productStructure)
             })
-            cleanedProducts.sort(productPopularityComparator)
-            setDataChartFive(cleanedProducts.slice(0,5))
-            
 
+            cleanedProducts.sort(productPopularityComparator)
+            if (cleanedProducts.length >= 5) {
+                setDataChartFive(cleanedProducts.slice(0,5))
+            } else {
+                setDataChartFive(cleanedProducts)
+            }
 
             let productRatings = new Map();
             records.forEach(r => {
@@ -181,8 +187,13 @@ const useDashboardHooks = (user) => {
                 if (orderYear == currentYear && orderMonth == currentMonth) {
                     let productId = r.product.productId
                     let productName = r.product.name
+                    let score = r.product.ratingScore / r.product.numRatings
                     if (!productRatings.has(productId)) {
-                        productRatings.set(productId, [productName, r.product.ratingScore])
+                        if (isNaN(score)) {
+                            productRatings.set(productId, [productName, 0])
+                        } else {
+                            productRatings.set(productId, [productName, score])
+                        }
                     } 
                 }
             })
@@ -198,17 +209,48 @@ const useDashboardHooks = (user) => {
                 cleanedProductRatings.push(productRatingStructure)
             })
             cleanedProductRatings.sort(productRatingComparator)
-            setDataChartSix(cleanedProductRatings.slice(0,5))
-            
+            if (cleanedProductRatings.length >= 5) {
+                setDataChartSix(cleanedProductRatings.slice(0,5))
+            } else {
+                setDataChartSix(cleanedProductRatings)
+            }
+
+
+            let cleanedProductsReverse = []
+            Array.from(products.entries()).map(([key, val]) =>{
+                let productStructure = {
+                    "id": key,
+                    "number of records": val[1],
+                    "name": val[0]
+                }
+                cleanedProductsReverse.push(productStructure)
+            })
+
+            cleanedProducts.sort(productPopularityComparator).reverse()
+            if (cleanedProducts.length >= 5) {
+                setDataChartSeven(cleanedProducts.slice(0,5))
+            } else {
+                setDataChartSeven(cleanedProducts)
+            }
 
 
 
-
-            
-
-
-
-
+            let cleanedProductRatingsReversed = []
+            Array.from(productRatings.entries()).map(([key, val]) =>{
+                let productRatingStructure = {
+                    "id": key,
+                    "average rating score": val[1],
+                    "name": val[0]
+                }
+                cleanedProductRatingsReversed.push(productRatingStructure)
+            })
+            cleanedProductRatingsReversed.sort(productRatingComparator).reverse()
+            if (cleanedProductRatingsReversed.length >= 5) {
+                setDataChartEight(cleanedProductRatingsReversed.slice(0,5))
+            } else {
+                setDataChartEight(cleanedProductRatingsReversed)
+            }
+        
         })
         .catch ((error) => {
             setError(error)
@@ -220,7 +262,7 @@ const useDashboardHooks = (user) => {
 
     return { 
         data, displayData, dataChartOne, dataChartTwo, dataChartThree, dataChartFour,
-        dataChartFive, dataChartSix
+        dataChartFive, dataChartSix, dataChartSeven, dataChartEight
     } 
 }
 

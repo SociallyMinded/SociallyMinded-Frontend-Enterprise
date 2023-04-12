@@ -60,7 +60,6 @@ const determineMonth = (monthNumeric) => {
   }
 }
 
-
 export default function Dashboard() {
   const { user } = UserAuth();
 
@@ -70,7 +69,7 @@ export default function Dashboard() {
     searchByProductName, searchPrompts, handleSearchQuery, 
     displayData, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
     setShowOrderModal, handleClose, performFilter, dataChartOne , dataChartTwo, dataChartThree,
-    dataChartFour, dataChartFive, dataChartSix
+    dataChartFour, dataChartFive, dataChartSix, dataChartSeven, dataChartEight
   } = useDashboardHooks(user);
 
 
@@ -92,7 +91,6 @@ export default function Dashboard() {
   };
 
   console.log(dataChartSix)
-
 
   return (
     <PageTemplate>
@@ -170,16 +168,11 @@ export default function Dashboard() {
           }
       </GraphSectionTwo>
       <GraphSectionThree>
-
-     
-      </GraphSectionThree>
-
-
       {dataChartFour != {} &&
-          <>
+          <PopularityAndRatingChartContainer>
           <ChartTitle>Top 5 Most Popular Products</ChartTitle>
             <StyledBarChart
-                width={1000}
+                width={500}
                 height={400}
                 data={dataChartFive}
                 margin={{
@@ -196,14 +189,43 @@ export default function Dashboard() {
                 <Legend />
                 <Bar dataKey="number of records" fill="#8884d8" />
               </StyledBarChart>
-          </>
+          </PopularityAndRatingChartContainer>
         }
 
+        {dataChartSeven != {} &&
+          <PopularityAndRatingChartContainer>
+          <ChartTitle>Top 5 least popular products</ChartTitle>
+            <StyledBarChart
+                width={500}
+                height={400}
+                data={dataChartSeven}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="number of records" fill="#8884d8" />
+              </StyledBarChart>
+          </PopularityAndRatingChartContainer>
+        }
+     
+      </GraphSectionThree>
+
+
+
+      <GraphSectionThree>
       {dataChartSix != {} &&
-          <>
+          <PopularityAndRatingChartContainer>
           <ChartTitle>Top 5 Products with highest rating</ChartTitle>
             <StyledBarChart
-                width={1000}
+                width={500}
                 height={400}
                 data={dataChartSix}
                 margin={{
@@ -220,16 +242,50 @@ export default function Dashboard() {
                 <Legend />
                 <Bar dataKey="average rating score" fill="#8884d8" />
               </StyledBarChart>
-          </>
+          </PopularityAndRatingChartContainer>
         }
-    
 
+        {dataChartEight != {} &&
+          <PopularityAndRatingChartContainer>
+          <ChartTitle>Top 5 Products with lowest rating</ChartTitle>
+            <StyledBarChart
+                width={500}
+                height={400}
+                data={dataChartEight}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="average rating score" fill="#8884d8" />
+              </StyledBarChart>
+          </PopularityAndRatingChartContainer>
+        }
+  
+
+
+      </GraphSectionThree>
+      
       
       </ChartContainer>
 
     </PageTemplate>
   );
 }
+
+const PopularityAndRatingChartContainer = styled.div`
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+`
 
 const GraphContainerTwo = styled.div`
   display:flex;
@@ -245,7 +301,7 @@ const GraphSectionTwo = styled.div`
 const GraphSectionThree = styled.div`
     margin-top:5vh;
     display:flex;
-    flex-direction:column;
+    flex-direction:row;
     align-items:center;
     justify-content:center;
 `
