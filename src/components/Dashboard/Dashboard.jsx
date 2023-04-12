@@ -4,6 +4,7 @@ import LoggedInHeader from "../common/Header/LoggedInHeader";
 import Header from "../common/Header/Header";
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, Cell, Sankey } from 'recharts';
+import { Link } from "react-router-dom";
 
 import {
   LineChart,
@@ -98,7 +99,7 @@ export default function Dashboard() {
     <PageTemplate>
       {user == null ? <Header></Header> : <LoggedInHeader></LoggedInHeader>}
       <ChartContainer>
-        <DashboardTitle>Sales & Orders Analytics for {new Date().getFullYear()}</DashboardTitle>
+        <DashboardTitle>Orders Records Analytics for {new Date().getFullYear()}</DashboardTitle>
         
         <Dropdown>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -234,7 +235,7 @@ export default function Dashboard() {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
+                <YAxis tickCount={3}/>
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="number of records" fill="#5c94ed" />
@@ -263,7 +264,7 @@ export default function Dashboard() {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
+                <YAxis type="number" domain={[0, 5]} tickCount={6}/>
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="average rating score" fill="#f5b064" />
@@ -287,8 +288,8 @@ export default function Dashboard() {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
+                <YAxis type="number" domain={[0, 5]} tickCount={6}/>
+                <Tooltip/>
                 <Legend />
                 <Bar dataKey="average rating score" fill="#f5b064" />
               </StyledBarChart>
