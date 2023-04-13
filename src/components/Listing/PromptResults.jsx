@@ -30,7 +30,9 @@ const StyledPromptResults = styled.p`
 
 const StyledPromptResultsContainer = styled.div`
   border-radius: 10px;
-  background-color: white;
+  background-color:white;
+  margin-top:-11vh;
+  margin-left:8vw;
   position: absolute;
   opacity: 1;
   overflow-y: scroll;
@@ -39,5 +41,4 @@ const StyledPromptResultsContainer = styled.div`
   width: 25%;
   box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
   top: 18vh;
-  margin-left: 7.2vw;
 `;
