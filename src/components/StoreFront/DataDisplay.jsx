@@ -8,16 +8,25 @@ import Modal from 'react-bootstrap/Modal';
 import { useState } from "react"
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Spinner from 'react-bootstrap/Spinner';
 
 export const DataDisplay = ({data}) => {
 
-    console.log(data.displayData)
 
     const [selectedOrder, setSelectedOrder] = useState("");
 
     return (
         <StyledRow lg={5} md={4}>
-            {data.displayData != null && data.displayData.map((d) => (
+
+            {data.loading && 
+                <LoadingContainer>
+                    <h5>Fetching Records</h5>
+                    <Spinner animation="grow" />
+                </LoadingContainer>
+            }
+            {!data.loading &&
+            <>
+             {data.displayData != null && data.displayData.map((d) => (
                 <StyledCol md={3}>
                 <StyledLink id="styled-card-link"  to={'/order_details/'+ d.orderRecordId } state={{ d }}>
 
@@ -42,61 +51,21 @@ export const DataDisplay = ({data}) => {
                 </StyledCol>
             ))}
             {data.displayData != null && data.displayData.length == 0 && <StyledText>There are no orders to display</StyledText>}
-
-            {/* {data.showOrderModal && <>
-                <Modal
-                    show={data.showOrderModal}
-                    onHide={data.handleClose}
-                    keyboard={false}
-                >
-                <Modal.Header>
-                    <Modal.Title>Order Id {selectedOrder.orderRecordId}</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    Order Title
-                    <Form.Control placeholder={selectedOrder.orderTitle} disabled />
-                </Modal.Body>
-
-                <Modal.Body>
-                    Order Date
-                    <Form.Control placeholder={selectedOrder.dateOfOrder.split("T")[0]} disabled />
-                </Modal.Body>
-
-                <Modal.Body>
-                    Order Details
-                    <Form.Control as="textarea" placeholder={selectedOrder.orderDetails} disabled />
-                </Modal.Body>
-
-                <Modal.Body>
-                    Order Status
-                    <Form.Control placeholder={selectedOrder.orderStatus} disabled />
-                </Modal.Body>   
-
-                <Modal.Body>
-                    Customer Email
-                    <Form.Control placeholder={selectedOrder.customer.email} disabled />
-                </Modal.Body>
-
-                <Modal.Body>
-                    Customer Address
-                    <Form.Control as="textarea" placeholder={selectedOrder.address} disabled />
-                </Modal.Body>
-
-
-                <Modal.Footer>
-                    {selectedOrder.orderStatus != "Order Received" && <Button variant="primary" onClick={() => data.updatedOrderStatus(selectedOrder)}>Update Status To In Delivery</Button>}
-                    {selectedOrder.orderStatus == "Order Received" && <Button variant="primary" disabled onClick={() => data.updatedOrderStatus(selectedOrder)}>Update Status To In Delivery</Button>}
-                    <Button variant="secondary" onClick={() => data.setShowOrderModal(false)}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-                </Modal>
-                </>} */}
-
+            </>
+           
+            }
         </StyledRow>
     )
 }
+
+const LoadingContainer = styled.div`
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    margin-top:5vh;
+`
 
 const PAHighlightedText = styled.p`
     background-color:#ffd9de;

@@ -32,7 +32,6 @@ const ViewOrderDetails = () => {
         error
     } = useViewOrderDetailsHooks();
 
-    console.log(state.d)
 
     const [orderStatus, setOrderStatus] = useState("")
       
@@ -40,7 +39,7 @@ const ViewOrderDetails = () => {
         <PageTemplate>
             {user == null ? <Header></Header> : <LoggedInHeader></LoggedInHeader>}
             <ProductListingPage>        
-            <ProductListingImg  src={state.d.product.imageLink} />
+            <ProductListingImg  src={state.d != null && state.d.product.imageLink[0]} />
             
             <ProductListingDescriptionSection>
                 <ProductListingDescriptionContainer>
@@ -150,8 +149,9 @@ const ProductListingPage = styled.div`
     flex-direction:row;
     flex-wrap:wrap;
     width:90vw;
-    height:70vh;
+    height:100%;
     margin-top:5vh;
+    margin-bottom:3vh;
     padding-top:8vh;
     padding-left:5vw;
 `

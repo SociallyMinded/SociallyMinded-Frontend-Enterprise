@@ -50,7 +50,8 @@ const ViewOrdersPage = () => {
                         displayData: displayData,
                         updatedOrderStatus: updatedOrderStatus,
                         showOrderModal: showOrderModal,
-                        setShowOrderModal: setShowOrderModal
+                        setShowOrderModal: setShowOrderModal,
+                        loading: loading
                     }}
                 />
             </div>
