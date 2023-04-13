@@ -13,18 +13,18 @@ const useViewOrderHooks = (user) => {
     const [refresh, toggleRefresh] = useState(false)
 
     useEffect(() => {
-        setLoading(true)
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
         .then(response => {
+            setLoading(true)
             let data = response.data.filter((d) => d.product.isActive == true)
             setData(response.data)
             setDisplayData(data)
+            setLoading(false)
         })
         .catch ((error) => {
             setError(error)
         })
         .finally (
-            setLoading(false)
         )
     }, [user, refresh]);
 
