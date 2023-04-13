@@ -23,23 +23,7 @@ import useDashboardHooks from "./useDashboardHooks";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Text } from "recharts";
 import { Card } from "react-bootstrap";
-
-const CustomXAxisTick = ({ x, y, payload }) => {
-  if (payload && payload.value) {
-    return (
-      <Text
-          fontSize={"18px"}
-          x={x} 
-          y={y} 
-          textAnchor="middle" 
-          verticalAnchor="start"
-      >{payload.value}
-      </Text>
-
-    );
-  }
-  return null;
-};
+import Spinner from 'react-bootstrap/Spinner';
 
 const determineMonth = (monthNumeric) => {
   let actualMonth = monthNumeric + 1
@@ -164,23 +148,28 @@ export default function Dashboard() {
       </Dropdown.Menu>
     </Dropdown>
 
-    <CardsSection>
-          <CardContainer>
-            <Card>
-              <StyledCardBody>
-                <CardTitle>Total Sales Revenue</CardTitle>
-                <CardSubtitle>{"$" + totalRevenue}</CardSubtitle>
-              </StyledCardBody>
-            </Card>
-          </CardContainer>
-          <CardContainer>
-            <Card>
-              <StyledCardBody>
-                <CardTitle>Total Order Records</CardTitle>
-                <CardSubtitle>{totalRecords}</CardSubtitle>
-              </StyledCardBody>
-            </Card>
-          </CardContainer>
+        {totalRecords == null && <SpinnerContainer>
+              <h5>Generating Charts</h5>
+              <Spinner animation="grow" />
+          </SpinnerContainer>}
+
+          <CardsSection>
+            <CardContainer>
+              <Card>
+                <StyledCardBody>
+                  <CardTitle>Total Sales Revenue</CardTitle>
+                  <CardSubtitle>{"$" + totalRevenue}</CardSubtitle>
+                </StyledCardBody>
+              </Card>
+            </CardContainer>
+            <CardContainer>
+              <Card>
+                <StyledCardBody>
+                  <CardTitle>Total Order Records</CardTitle>
+                  <CardSubtitle>{totalRecords}</CardSubtitle>
+                </StyledCardBody>
+              </Card>
+            </CardContainer>
         </CardsSection>
 
         
@@ -364,7 +353,9 @@ export default function Dashboard() {
       </GraphSectionThree>
       
       
+      
       </ChartContainer>
+    
 
     </PageTemplate>
   );
@@ -458,4 +449,12 @@ const StyledBarChart = styled(LineChart)`
 
 const StyledPieChart = styled(PieChart)`
   margin-left:-20px;
+`
+const SpinnerContainer = styled.div`
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin-top:5vh;
 `

@@ -195,12 +195,13 @@ const useProductListingHooks = () => {
           let data = response.data.filter((d) => d.isActive == true);
           setData(data);
           setDisplayData(data);
-          console.log(response.data.socialEnterpriseId);
-          console.log(response.data);
         })
         .catch((error) => {
           setError(error);
-        });
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     }
   }, [refreshPage, loading, user]);
 

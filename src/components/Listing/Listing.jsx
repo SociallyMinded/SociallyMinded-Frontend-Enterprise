@@ -18,12 +18,14 @@ import { ModalBody } from "react-bootstrap";
 import { Actions } from "./productListingHooks.js";
 import "./productListing.css";
 import { useState } from "react";
+import Spinner from 'react-bootstrap/Spinner';
 
 const Listing = () => {
   const { state } = useLocation();
   const { user } = UserAuth();
   const {
     data,
+    loading,
     productSelected,
     updateProduct,
     createNewProduct,
@@ -111,6 +113,12 @@ const Listing = () => {
       )}
       <ProductListingPage>
         <ProductListingContainer>
+
+        {loading && <SpinnerContainer>
+            <h5>Fetching Listings</h5>
+            <Spinner animation="grow" />
+        </SpinnerContainer>}
+
           {data != null && data.length == 0 && <h5>No products yet.</h5>}
           {data != null &&
             data.map((data) => (
@@ -496,6 +504,15 @@ const Listing = () => {
     </PageTemplate>
   );
 };
+
+const SpinnerContainer = styled.div`
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin-top:5vh;
+`
 
 const ImageUploadErrorText = styled.p`
   font-size: 80%;
