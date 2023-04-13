@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import SiteLogo from "../common/SiteLogo/SiteLogo";
 import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const Signup = () => {
   const { state, setState } = useSignupHooks();
@@ -20,9 +21,7 @@ const Signup = () => {
 
           {state.showErrorWarning && (
             <Alert
-              variant={"danger"}
-              onClose={setState.handleShowErrorWarning}
-              dismissible
+              variant={"danger"}              
             >
               {state.serverError}
             </Alert>
@@ -70,7 +69,9 @@ const Signup = () => {
               value={state.password}
               onChange={setState.handlePasswordChange}
             />
-            <p>{state.passwordError}</p>
+            <ErrorText>{state.passwordError}</ErrorText>
+            <PasswordStrengthBar password={state.password} />
+
           </FormInputContainer>
           {state.email.length != 0 &&
             state.username.length != 0 &&
@@ -94,6 +95,11 @@ const Signup = () => {
     </PageTemplate>
   );
 };
+
+const ErrorText = styled.p`
+    color:red;
+    font-size:0.9em;
+`
 
 const FormResultTemplate = styled.div`
   height: 13vh;

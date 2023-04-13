@@ -24,8 +24,6 @@ const Login = () => {
           {state.showErrorWarning && (
             <Alert
               variant={"danger"}
-              onClose={setState.handleShowErrorWarning}
-              dismissible
             >
               {state.serverError}
             </Alert>
