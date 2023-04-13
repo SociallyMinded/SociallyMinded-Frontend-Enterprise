@@ -242,7 +242,7 @@ const Listing = () => {
               >
                 <Form.Label>Category</Form.Label>
                 <Form.Select className="ml-3" onChange={handleProductCategory}>
-                  <option value="CRAFT">Craft</option>
+                  <option value="CRAFTS">Craft</option>
                   <option value="CLOTHING">Clothing</option>
                   <option value="FOOD">Food</option>
                   <option value="OTHERS">Others</option>

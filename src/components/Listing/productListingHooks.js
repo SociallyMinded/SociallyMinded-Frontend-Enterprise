@@ -128,7 +128,7 @@ const useProductListingHooks = () => {
     setProductDescription("");
     setSelectedFiles([]);
     setEditFile("");
-    setProductCategory("CRAFT");
+    setProductCategory("CRAFTS");
     setValidated(false);
     setShowImageUploadError(false);
     if (user != null) {
@@ -175,7 +175,7 @@ const useProductListingHooks = () => {
             price: productPrice,
             description: productDescription,
             imageLink: imageBase64s,
-            category: productCategory == "" ? "CRAFT" : productCategory,
+            category: productCategory == "" ? "CRAFTS" : productCategory,
             numRatings:0,
             ratingScore:0,
             isActive:true
@@ -226,6 +226,7 @@ const useProductListingHooks = () => {
             imageLink: imageBase64s,
             category: editProductCategory,
             productId: productSelected.productId,
+            isActive:true
           },
         };
         axios
