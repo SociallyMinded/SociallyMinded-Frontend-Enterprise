@@ -5,7 +5,7 @@ import {
   updateProductUrl,
   deleteProductUrl,
   getEnterpriseByFirebaseUid,
-  deactivateProductUrl
+  deactivateProductUrl,
 } from "../../routes/routes";
 import axios from "axios";
 import { UserAuth } from "../../context/AuthContext";
@@ -192,7 +192,7 @@ const useProductListingHooks = () => {
           );
         })
         .then((response) => {
-          let data = response.data.filter((d) => d.isActive == true)
+          let data = response.data.filter((d) => d.isActive == true);
           setData(data);
           setDisplayData(data);
           console.log(response.data.socialEnterpriseId);
@@ -227,9 +227,9 @@ const useProductListingHooks = () => {
             description: productDescription,
             imageLink: imageBase64s,
             category: productCategory == "" ? "CRAFTS" : productCategory,
-            numRatings:0,
-            ratingScore:0,
-            isActive:true
+            numRatings: 0,
+            ratingScore: 0,
+            isActive: true,
           },
         };
 
@@ -277,7 +277,7 @@ const useProductListingHooks = () => {
             imageLink: imageBase64s,
             category: editProductCategory,
             productId: productSelected.productId,
-            isActive:true
+            isActive: true,
           },
         };
         axios
@@ -334,13 +334,13 @@ const useProductListingHooks = () => {
     }
   };*/
 
-  const [showErrorToast, setShowErrorToast] = useState(false)
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const deleteProduct = async () => {
     if (user != null) {
       const updatedProduct = {
         socialEnterpriseId: currentEnterprise.socialEnterpriseId,
-      }
+      };
 
       axios
         .put(deactivateProductUrl + productSelected.productId, updatedProduct)
@@ -409,7 +409,7 @@ const useProductListingHooks = () => {
     serverError,
     showErrorWarning,
     handleShowErrorWarning,
-    setShowErrorWarning
+    setShowErrorWarning,
     searchQuery,
     searchByProductName,
     searchPrompts,
