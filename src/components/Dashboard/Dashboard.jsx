@@ -106,7 +106,6 @@ export default function Dashboard() {
   } = useDashboardHooks(user);
 
 
-
   const COLORS = ['#0088FE', '#FF8042', '#00C49F', '#FFBB28']
 
   const RADIAN = Math.PI / 180;
@@ -259,11 +258,11 @@ export default function Dashboard() {
           }
       </GraphSectionTwo>
       <GraphSectionThree>
-      {
+      {dataChartSeven != {} && 
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 Most Popular Products</ChartTitle>
+          <ChartTitle>Most Popular Products</ChartTitle>
             <BarChart
-                data={data01}
+                data={dataChartSeven}
                 width={500}
                 height={400}
                 margin={{
@@ -283,13 +282,13 @@ export default function Dashboard() {
           </PopularityAndRatingChartContainer>
         }
 
-        {dataChartSeven != {} &&
+        {dataChartFive != {} &&
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 least popular products</ChartTitle>
+          <ChartTitle>Least popular products</ChartTitle>
             <BarChart
                 width={500}
                 height={400}
-                data={dataChartSeven}
+                data={dataChartFive}
                 margin={{
                   top: 5,
                   right: 0,
@@ -314,7 +313,7 @@ export default function Dashboard() {
       <GraphSectionThree>
       {dataChartSix != {} &&
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 Products with highest rating</ChartTitle>
+          <ChartTitle>Products with the highest ratings</ChartTitle>
             <BarChart
                 width={500}
                 height={400}
@@ -338,7 +337,7 @@ export default function Dashboard() {
 
         {dataChartEight != {} &&
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 Products with lowest rating</ChartTitle>
+          <ChartTitle>Products with the lowest ratings</ChartTitle>
             <BarChart
                 width={500}
                 height={400}

@@ -7,20 +7,20 @@ import { UserAuth } from "../../context/AuthContext"
 
 function productPopularityComparator(a, b) {
     if (a["number of records"] < b["number of records"]) {
-      return 1;
+      return -1;
     }
     if (a["number of records"] > b["number of records"]) {
-      return -1;
+      return 1;
     }
     return 0;
 }
 
 function productRatingComparator(a, b) {
-    if (Math.floor(a["average rating score"]) < Math.floor(b["average rating score"])) {
-      return 1;
-    }
     if (Math.floor(a["average rating score"]) > Math.floor(b["average rating score"])) {
       return -1;
+    }
+    if (Math.floor(a["average rating score"]) < Math.floor(b["average rating score"])) {
+      return 1;
     }
     return 0;
 }
@@ -260,11 +260,11 @@ const useDashboardHooks = (user) => {
                 cleanedProductsReverse.push(productStructure)
             })
 
-            cleanedProducts.sort(productPopularityComparator).reverse()
-            if (cleanedProducts.length >= 5) {
-                setDataChartSeven(cleanedProducts.slice(0,5))
+            cleanedProductsReverse.sort(productPopularityComparator).reverse()
+            if (cleanedProductsReverse.length >= 5) {
+                setDataChartSeven(cleanedProductsReverse.slice(0,5))
             } else {
-                setDataChartSeven(cleanedProducts)
+                setDataChartSeven(cleanedProductsReverse)
             }
 
 
