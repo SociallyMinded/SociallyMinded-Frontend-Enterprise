@@ -45,13 +45,13 @@ const useDashboardHooks = (user) => {
     const[selectedMonth, setSelectedMonth] = useState(new Date().getMonth()+1)
 
     const [totalRevenue, setTotalRevenue] = useState([]);
-    const [totalRecords, setTotalRecords] = useState([]);
+    const [totalRecords, setTotalRecords] = useState(null);
 
     useEffect(() => {
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
         .then(response => {
+            setLoading(true)
             let records = response.data.filter((d) => d.product.isActive == true)
-            console.log(records)
 
             setData(records)
 
@@ -277,20 +277,19 @@ const useDashboardHooks = (user) => {
                     "name": val[0]
                 }
                 cleanedProductRatingsReversed.push(productRatingStructure)
+                setLoading(false)
             })
             cleanedProductRatingsReversed.sort(productRatingComparator).reverse()
             if (cleanedProductRatingsReversed.length >= 5) {
                 setDataChartEight(cleanedProductRatingsReversed.slice(0,5))
             } else {
                 setDataChartEight(cleanedProductRatingsReversed)
-            }
-        
+            }        
         })
         .catch ((error) => {
             setError(error)
         })
         .finally (
-            setLoading(false)
         )
     }, [user, refresh, selectedMonth]);
 
