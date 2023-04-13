@@ -376,10 +376,10 @@ const Listing = () => {
                   onChange={(e) => handleEditProductCategory(e.target.value)}
                   defaultValue={editProductCategory}
                 >
-                  <option value="Craft">Craft</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Food">Food</option>
-                  <option value="Others">Others</option>
+                  <option value="CRAFTS">Crafts</option>
+                  <option value="CLOTHING">Clothing</option>
+                  <option value="FOOD">Food</option>
+                  <option value="OTHERS">Others</option>
                 </Form.Select>
               </Form.Group>
             </Form>
