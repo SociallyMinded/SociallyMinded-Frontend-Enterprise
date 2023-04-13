@@ -122,6 +122,12 @@ const useProductListingHooks = () => {
     createNewProduct(event);
   };
 
+  const [serverError, setServerError] = useState("");
+  const [showErrorWarning, setShowErrorWarning] = useState(false);
+  const handleShowErrorWarning = (event) => {
+    setShowErrorWarning(!showErrorWarning);
+  };
+
   useEffect(() => {
     setProductName("");
     setProductPrice("");
@@ -297,8 +303,9 @@ const useProductListingHooks = () => {
           console.log(response);
         })
         .catch((error) => {
-          setError(error.response.data)
-          setShowErrorToast(true)
+          setError(error);
+          setServerError("Product has uncompleted orders. Cannot be deleted.");
+          setShowErrorWarning(true);
         })
         .finally((res) => {
           setShowConfirmDeleteModal(false);
@@ -353,7 +360,11 @@ const useProductListingHooks = () => {
     selectedFiles,
     showImageUploadError,
     showErrorToast,
-    setShowErrorToast
+    setShowErrorToast,
+    serverError,
+    showErrorWarning,
+    handleShowErrorWarning,
+    setShowErrorWarning
   };
 };
 
