@@ -2,9 +2,8 @@
 
 .custom-tooltip {
     background-color:white;
-    border: 1px solid grey;
+    border: 1px solid #dbdbdb;
     padding:0.5em;
-    border-radius:10px;
 }
 
 .label {

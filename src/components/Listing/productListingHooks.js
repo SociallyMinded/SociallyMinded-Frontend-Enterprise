@@ -5,6 +5,7 @@ import {
   updateProductUrl,
   deleteProductUrl,
   getEnterpriseByFirebaseUid,
+  deactivateProductUrl
 } from "../../routes/routes";
 import axios from "axios";
 import { UserAuth } from "../../context/AuthContext";
@@ -191,8 +192,9 @@ const useProductListingHooks = () => {
           );
         })
         .then((response) => {
-          setData(response.data);
-          setDisplayData(response.data);
+          let data = response.data.filter((d) => d.isActive == true)
+          setData(data);
+          setDisplayData(data);
           console.log(response.data.socialEnterpriseId);
           console.log(response.data);
         })
@@ -217,18 +219,17 @@ const useProductListingHooks = () => {
         });
       });
       Promise.all(imagePromises).then((imageBase64s) => {
-        //const socialEnterpriseId = 3;
         const newProduct = {
           socialEnterpriseId: currentEnterprise.socialEnterpriseId,
-          //socialEnterpriseFirebaseUid: socialEnterpriseFirebaseUid,
           product: {
             name: productName,
             price: productPrice,
             description: productDescription,
             imageLink: imageBase64s,
             category: productCategory == "" ? "CRAFTS" : productCategory,
-            numRatings: 0,
-            ratingScore: 0,
+            numRatings:0,
+            ratingScore:0,
+            isActive:true
           },
         };
 
@@ -276,6 +277,7 @@ const useProductListingHooks = () => {
             imageLink: imageBase64s,
             category: editProductCategory,
             productId: productSelected.productId,
+            isActive:true
           },
         };
         axios
@@ -300,10 +302,48 @@ const useProductListingHooks = () => {
     }
   };
 
+  /*const updateProduct = async () => {
+    if (user != null) {
+      //const socialEnterpriseId = 3;
+      console.log(productSelected.productId);
+      const updatedProduct = {
+        socialEnterpriseId: currentEnterprise.socialEnterpriseId,
+        //socialEnterpriseFirebaseUid: socialEnterpriseFirebaseUid,
+        product: {
+          name: editProductName,
+          price: editProductPrice,
+          description: editProductDescription,
+          imageLink: editImageLink,
+          productId: productSelected.productId,
+        },
+      };
+
+      await axios
+        .put(updateProductUrl + productSelected.productId, updatedProduct)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => setError(error.response.data))
+        .finally((res) => {
+          setShowConfirmEditModal(false);
+          setRefreshPage(!refreshPage);
+        });
+    } else {
+      //setShowEditProductModal(false);
+      setShowConfirmEditModal(false);
+    }
+  };*/
+
+  const [showErrorToast, setShowErrorToast] = useState(false)
+
   const deleteProduct = async () => {
     if (user != null) {
-      await axios
-        .delete(deleteProductUrl + productSelected.productId)
+      const updatedProduct = {
+        socialEnterpriseId: currentEnterprise.socialEnterpriseId,
+      }
+
+      axios
+        .put(deactivateProductUrl + productSelected.productId, updatedProduct)
         .then((response) => {
           console.log(response);
         })
@@ -364,9 +404,12 @@ const useProductListingHooks = () => {
     handleSubmit,
     selectedFiles,
     showImageUploadError,
+    showErrorToast,
+    setShowErrorToast,
     serverError,
     showErrorWarning,
     handleShowErrorWarning,
+    setShowErrorWarning
     searchQuery,
     searchByProductName,
     searchPrompts,

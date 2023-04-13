@@ -17,6 +17,7 @@ import { FaEllipsisV, FaSearch } from "react-icons/fa";
 import { ModalBody } from "react-bootstrap";
 import { Actions } from "./productListingHooks.js";
 import "./productListing.css";
+import { useState } from "react";
 
 const Listing = () => {
   const { state } = useLocation();
@@ -64,6 +65,9 @@ const Listing = () => {
     serverError,
     showErrorWarning,
     handleShowErrorWarning,
+    showErrorToast,
+    setShowErrorToast,
+    setShowErrorWarning,
     searchQuery,
     searchByProductName,
     searchPrompts,
@@ -72,9 +76,12 @@ const Listing = () => {
     performSearch,
   } = useProductListingHooks();
 
+  const [show, setShow] = useState(false)
+
   return (
     <PageTemplate>
       {user == null ? <Header></Header> : <LoggedInHeader></LoggedInHeader>}
+
       <ProductListingHeaderContainer>
         <Subheader>Products</Subheader>
         <SearchInput
@@ -97,9 +104,8 @@ const Listing = () => {
         <Alert
           variant={"danger"}
           style={{ width: "30rem", marginTop: "10px", marginBottom: 0 }}
-          onClose={handleShowErrorWarning}
-          dismissible
         >
+          <button class="toast-button" onClick={() => setShowErrorWarning(false)}>X</button>
           {serverError}
         </Alert>
       )}
@@ -147,7 +153,7 @@ const Listing = () => {
                   </Dropdown>
                 </ProductListingImgHeaderContainer>
                 <ProductListingImg
-                  src={data.imageLink[0]}
+                  src={data != null  && data.imageLink != null && data.imageLink[0]}
                   alt="Product Picture"
                 />
               </ProductListingImgContainer>
@@ -256,7 +262,7 @@ const Listing = () => {
               >
                 <Form.Label>Category</Form.Label>
                 <Form.Select className="ml-3" onChange={handleProductCategory}>
-                  <option value="CRAFT">Craft</option>
+                  <option value="CRAFTS">Crafts</option>
                   <option value="CLOTHING">Clothing</option>
                   <option value="FOOD">Food</option>
                   <option value="OTHERS">Others</option>
@@ -590,6 +596,7 @@ const ProductListingHeaderContainer = styled.div`
   max-height: 30vh;
   border-bottom: 1px solid #7a7a7a;
   padding-bottom: 2vh;
+  position:relative;
 `;
 
 const SearchBox = styled.div`
