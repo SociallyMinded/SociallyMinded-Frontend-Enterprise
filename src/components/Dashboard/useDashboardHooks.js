@@ -47,7 +47,8 @@ const useDashboardHooks = (user) => {
     useEffect(() => {
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
         .then(response => {
-            let records = response.data
+            let records = response.data.filter((d) => d.isActive == true)
+            
             setData(records)
 
             let currentYear = new Date().getFullYear()

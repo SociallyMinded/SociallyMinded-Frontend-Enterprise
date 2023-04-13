@@ -17,6 +17,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { Actions } from "./productListingHooks.js";
 import "./productListing.css";
 import { useEffect } from "react";
+import Alert from 'react-bootstrap/Alert';
 
 const Listing = () => {
   const { state } = useLocation();
@@ -61,11 +62,21 @@ const Listing = () => {
     handleSubmit,
     selectedFiles,
     showImageUploadError,
+    showErrorToast,
+    setShowErrorToast
   } = useProductListingHooks();
+
+  const [show, setShow] = useState(false)
 
   return (
     <PageTemplate>
       {user == null ? <Header></Header> : <LoggedInHeader></LoggedInHeader>}
+      {showErrorToast && 
+         <Alert id="alert" variant={"danger"}>
+          <button class="toast-button" onClick={() => setShowErrorToast(false)}>X</button>
+          You cannot delete a product that still has uncompleted orders
+       </Alert>
+      }
       <ProductListingHeaderContainer>
         <Subheader>Products</Subheader>
         <SearchBox>
@@ -122,7 +133,7 @@ const Listing = () => {
                   </Dropdown>
                 </ProductListingImgHeaderContainer>
                 <ProductListingImg
-                  src={data.imageLink[0]}
+                  src={data != null  && data.imageLink != null && data.imageLink[0]}
                   alt="Product Picture"
                 />
               </ProductListingImgContainer>
@@ -536,6 +547,7 @@ const ProductListingHeaderContainer = styled.div`
   width: 100%;
   border-bottom: 1px solid #7a7a7a;
   padding-bottom: 2vh;
+  position:relative;
 `;
 
 const SearchBox = styled.div`

@@ -5,6 +5,7 @@ import {
   updateProductUrl,
   deleteProductUrl,
   getEnterpriseByFirebaseUid,
+  deactivateProductUrl
 } from "../../routes/routes";
 import axios from "axios";
 import { UserAuth } from "../../context/AuthContext";
@@ -140,8 +141,9 @@ const useProductListingHooks = () => {
           );
         })
         .then((response) => {
-          setData(response.data);
-          setDisplayData(response.data);
+          let data = response.data.filter((d) => d.isActive == true)
+          setData(data);
+          setDisplayData(data);
           console.log(response.data.socialEnterpriseId);
           console.log(response.data);
         })
@@ -166,10 +168,8 @@ const useProductListingHooks = () => {
         });
       });
       Promise.all(imagePromises).then((imageBase64s) => {
-        //const socialEnterpriseId = 3;
         const newProduct = {
           socialEnterpriseId: currentEnterprise.socialEnterpriseId,
-          //socialEnterpriseFirebaseUid: socialEnterpriseFirebaseUid,
           product: {
             name: productName,
             price: productPrice,
@@ -177,7 +177,8 @@ const useProductListingHooks = () => {
             imageLink: imageBase64s,
             category: productCategory == "" ? "CRAFT" : productCategory,
             numRatings:0,
-            ratingScore:0
+            ratingScore:0,
+            isActive:true
           },
         };
 
@@ -281,14 +282,23 @@ const useProductListingHooks = () => {
     }
   };*/
 
+  const [showErrorToast, setShowErrorToast] = useState(false)
+
   const deleteProduct = async () => {
     if (user != null) {
-      await axios
-        .delete(deleteProductUrl + productSelected.productId)
+      const updatedProduct = {
+        socialEnterpriseId: currentEnterprise.socialEnterpriseId,
+      }
+
+      axios
+        .put(deactivateProductUrl + productSelected.productId, updatedProduct)
         .then((response) => {
           console.log(response);
         })
-        .catch((error) => setError(error))
+        .catch((error) => {
+          setError(error.response.data)
+          setShowErrorToast(true)
+        })
         .finally((res) => {
           setShowConfirmDeleteModal(false);
           setRefreshPage(!refreshPage);
@@ -341,6 +351,8 @@ const useProductListingHooks = () => {
     handleSubmit,
     selectedFiles,
     showImageUploadError,
+    showErrorToast,
+    setShowErrorToast
   };
 };
 
