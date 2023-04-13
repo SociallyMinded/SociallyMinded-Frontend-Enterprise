@@ -22,7 +22,7 @@ import styled from "styled-components";
 import useDashboardHooks from "./useDashboardHooks";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Text } from "recharts";
-
+import { Card } from "react-bootstrap";
 
 const CustomXAxisTick = ({ x, y, payload }) => {
   if (payload && payload.value) {
@@ -91,7 +91,7 @@ export default function Dashboard() {
     displayData, showSearchPrompts, performSearch, updatedOrderStatus, showOrderModal,
     setShowOrderModal, handleClose, performFilter, dataChartOne , dataChartTwo, dataChartThree,
     dataChartFour, dataChartFive, dataChartSix, dataChartSeven, dataChartEight,
-    selectedMonth, setSelectedMonth, toggleRefresh
+    selectedMonth, setSelectedMonth, toggleRefresh, totalRevenue, totalRecords
   } = useDashboardHooks(user);
 
 
@@ -154,29 +154,52 @@ export default function Dashboard() {
         <Dropdown.Item onClick={() => setSelectedMonth(12)}>Dec</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
+
+    <CardsSection>
+          <CardContainer>
+            <Card>
+              <StyledCardBody>
+                <CardTitle>Total Sales Revenue</CardTitle>
+                <CardSubtitle>{"$" + totalRevenue}</CardSubtitle>
+              </StyledCardBody>
+            </Card>
+          </CardContainer>
+          <CardContainer>
+            <Card>
+              <StyledCardBody>
+                <CardTitle>Total Order Records</CardTitle>
+                <CardSubtitle>{totalRecords}</CardSubtitle>
+              </StyledCardBody>
+            </Card>
+          </CardContainer>
+        </CardsSection>
+
         
         {dataChartOne != {} &&
           <>
-          <ChartTitle>Total Sales Revenue</ChartTitle>
-            <StyledBarChart
-                width={1000}
-                height={400}
-                data={dataChartOne}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="total sales" fill="#8884d8" />
-              </StyledBarChart>
-          </>
+          <ChartTitle>Total Sales Revenue By Day</ChartTitle>
+          
+          <LineChart
+          width={1000}
+          height={400}
+          data={dataChartOne}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="total sales" stroke="#8884d8" />
+        </LineChart>
+        </>
+
+            
         }
 
       <GraphSectionTwo>
@@ -338,6 +361,43 @@ export default function Dashboard() {
   );
 }
 
+const CardTitle = styled.h5`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top:2vh;
+`
+
+const CardSubtitle = styled.h6`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top:2vh;
+  font-size:1.5em;
+`
+
+const StyledCardBody = styled(Card.Body)`
+  padding:1em;
+`
+
+const CardsSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left:5vw;
+  margin-top:5vh;
+`;
+
 const PopularityAndRatingChartContainer = styled.div`
     display:flex;
     flex-direction:column;
@@ -382,7 +442,7 @@ const ChartContainer = styled.div`
   justify-content:center;
 `
 
-const StyledBarChart = styled(BarChart)`
+const StyledBarChart = styled(LineChart)`
   margin-left:-20px;
   margin-top:3vh;
 `
