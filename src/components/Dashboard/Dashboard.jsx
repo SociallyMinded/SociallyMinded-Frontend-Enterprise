@@ -81,6 +81,17 @@ const determineMonth = (monthNumeric) => {
   }
 }
 
+const data01 = [
+  {
+    "id":1,
+    "number of records": "12"
+  },
+  {
+    "id":2,
+    "number of records": "13"
+  },
+
+]
 export default function Dashboard() {
   const { user } = UserAuth();
 
@@ -94,8 +105,6 @@ export default function Dashboard() {
     selectedMonth, setSelectedMonth, toggleRefresh, totalRevenue, totalRecords
   } = useDashboardHooks(user);
 
-
-  console.log(dataChartFive)
 
   const COLORS = ['#0088FE', '#FF8042', '#00C49F', '#FFBB28']
 
@@ -249,13 +258,13 @@ export default function Dashboard() {
           }
       </GraphSectionTwo>
       <GraphSectionThree>
-      {dataChartFour != {} &&
+      {dataChartSeven != {} && 
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 Most Popular Products</ChartTitle>
-            <StyledBarChart
+          <ChartTitle>Most Popular Products</ChartTitle>
+            <BarChart
+                data={dataChartSeven}
                 width={500}
                 height={400}
-                data={dataChartFive}
                 margin={{
                   top: 5,
                   right: 0,
@@ -269,17 +278,17 @@ export default function Dashboard() {
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="number of records" fill="#5c94ed" />
-              </StyledBarChart>
+              </BarChart>
           </PopularityAndRatingChartContainer>
         }
 
-        {dataChartSeven != {} &&
+        {dataChartFive != {} &&
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 least popular products</ChartTitle>
-            <StyledBarChart
+          <ChartTitle>Least popular products</ChartTitle>
+            <BarChart
                 width={500}
                 height={400}
-                data={dataChartSeven}
+                data={dataChartFive}
                 margin={{
                   top: 5,
                   right: 0,
@@ -293,7 +302,7 @@ export default function Dashboard() {
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="number of records" fill="#5c94ed" />
-              </StyledBarChart>
+              </BarChart>
           </PopularityAndRatingChartContainer>
         }
      
@@ -304,8 +313,8 @@ export default function Dashboard() {
       <GraphSectionThree>
       {dataChartSix != {} &&
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 Products with highest rating</ChartTitle>
-            <StyledBarChart
+          <ChartTitle>Products with the highest ratings</ChartTitle>
+            <BarChart
                 width={500}
                 height={400}
                 data={dataChartSix}
@@ -322,14 +331,14 @@ export default function Dashboard() {
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="average rating score" fill="#f5b064" />
-              </StyledBarChart>
+              </BarChart>
           </PopularityAndRatingChartContainer>
         }
 
         {dataChartEight != {} &&
           <PopularityAndRatingChartContainer>
-          <ChartTitle>Top 5 Products with lowest rating</ChartTitle>
-            <StyledBarChart
+          <ChartTitle>Products with the lowest ratings</ChartTitle>
+            <BarChart
                 width={500}
                 height={400}
                 data={dataChartEight}
@@ -346,7 +355,7 @@ export default function Dashboard() {
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 <Bar dataKey="average rating score" fill="#f5b064" />
-              </StyledBarChart>
+              </BarChart>
           </PopularityAndRatingChartContainer>
         }
   
