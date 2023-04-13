@@ -44,15 +44,46 @@ const useDashboardHooks = (user) => {
 
     const[selectedMonth, setSelectedMonth] = useState(new Date().getMonth()+1)
 
+    const [totalRevenue, setTotalRevenue] = useState([]);
+    const [totalRecords, setTotalRecords] = useState([]);
+
     useEffect(() => {
         axios.get(getAllOrdersByEnterpriseFirebaseUid + user.uid)
         .then(response => {
-            let records = response.data.filter((d) => d.isActive == true)
-            
+            let records = response.data.filter((d) => d.product.isActive == true)
+            console.log(records)
+
             setData(records)
 
             let currentYear = new Date().getFullYear()
             let currentMonth = new Date().getMonth()+1
+
+            let totalRevenueData = 0;
+            records.forEach((r) => {
+              let orderYear = r.dateOfOrder.split("T")[0].split("-")[0];
+              let orderMonth = Math.floor(
+                r.dateOfOrder.split("T")[0].split("-")[1]
+              );
+    
+              if (orderYear == currentYear && orderMonth == selectedMonth) {
+                totalRevenueData += r.totalPrice;
+              }
+            });
+            setTotalRevenue(totalRevenueData);
+
+            let totalRecordsData = 0;
+            records.forEach((r) => {
+                let orderYear = r.dateOfOrder.split("T")[0].split("-")[0];
+                let orderMonth = Math.floor(
+                  r.dateOfOrder.split("T")[0].split("-")[1]
+                );
+      
+                if (orderYear == currentYear && orderMonth == selectedMonth) {
+                    totalRecordsData += 1;
+                }
+            });
+            setTotalRecords(totalRecordsData);
+
 
             /* Data for chart 1 */
             let cleaned = new Map();
@@ -265,7 +296,8 @@ const useDashboardHooks = (user) => {
 
     return { 
         data, displayData, dataChartOne, dataChartTwo, dataChartThree, dataChartFour,
-        dataChartFive, dataChartSix, dataChartSeven, dataChartEight, selectedMonth, setSelectedMonth, toggleRefresh
+        dataChartFive, dataChartSix, dataChartSeven, dataChartEight, selectedMonth, setSelectedMonth, toggleRefresh,
+        totalRevenue, totalRecords
     } 
 }
 
