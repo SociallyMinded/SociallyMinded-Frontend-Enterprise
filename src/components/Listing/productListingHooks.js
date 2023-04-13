@@ -128,6 +128,51 @@ const useProductListingHooks = () => {
     setShowErrorWarning(!showErrorWarning);
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchPrompts, setSearchPrompts] = useState("");
+  const [showSearchPrompts, setShowSearchPrompts] = useState(true);
+
+  const searchByProductName = (e) => {
+    setShowSearchPrompts(true);
+
+    var query = e.target.value;
+    setSearchQuery(query);
+    var queryNormalized = e.target.value.toLowerCase();
+    var queryLen = queryNormalized.length;
+
+    var displaySearchData = data.filter(
+      (d) => d.name.toLowerCase().substring(0, queryLen) == queryNormalized
+    );
+    var displaySearchDataNames = displaySearchData.map((data) => data.name);
+
+    if (queryNormalized != "") {
+      setSearchPrompts(displaySearchDataNames);
+    } else {
+      setSearchPrompts("");
+    }
+  };
+
+  const handleSearchQuery = (e) => {
+    setSearchQuery(e);
+    setShowSearchPrompts(false);
+  };
+
+  const performSearch = () => {
+    setShowSearchPrompts(false);
+
+    if (searchQuery != "") {
+      var queryNormalized = searchQuery.toLowerCase();
+      var queryLen = queryNormalized.length;
+      var displaySearchData = data.filter(
+        (data) =>
+          data.name.toLowerCase().substring(0, queryLen) == queryNormalized
+      );
+      setData(displaySearchData);
+    } else {
+      setData(displayData);
+    }
+  };
+
   useEffect(() => {
     setProductName("");
     setProductPrice("");
@@ -365,6 +410,12 @@ const useProductListingHooks = () => {
     showErrorWarning,
     handleShowErrorWarning,
     setShowErrorWarning
+    searchQuery,
+    searchByProductName,
+    searchPrompts,
+    showSearchPrompts,
+    handleSearchQuery,
+    performSearch,
   };
 };
 
