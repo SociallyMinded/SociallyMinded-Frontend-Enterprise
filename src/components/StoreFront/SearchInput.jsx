@@ -64,7 +64,7 @@ export const SearchInput = ({ data }) => {
                     onChange={data.searchByProductName} 
                     value={data.searchQuery} 
                 /> 
-                <Button variant="primary" onClick={data.performSearch}>Search</Button>
+                <StyledButton variant="primary" onClick={data.performSearch}>Search</StyledButton>
                 <>
                     {showExportData && <StyledButton onClick={prepareDataForExport}>Export Data</StyledButton>}
                     {showDownloadData && <StyledButton onClick={handleDownloadData}>
@@ -125,6 +125,7 @@ export const SearchInput = ({ data }) => {
 
 const StyledButton = styled(Button)`
     margin-left:1vw;
+    height:100%;
 `
  
 const StyledDropdownContainer = styled(Dropdown)`
@@ -134,7 +135,7 @@ const StyledDropdown = styled(Dropdown.Toggle)`
     background-color:#14A44D;
     color:white;
     margin-left:1vw;
-    height:110%;
+    height:100%;
 
     &:hover{
         background-color:#14A44D;
@@ -158,7 +159,8 @@ const StyledInputGroup = styled(InputGroup)`
     height:5vh;
     max-height:5vh;
     flex-direction: row; 
-    justify-content: center;    
+    justify-content: center;  
+    margin-bottom:3vh;
 `
     
  

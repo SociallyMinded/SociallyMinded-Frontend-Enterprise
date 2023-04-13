@@ -155,7 +155,6 @@ const StyledCardHeader = styled(Card.Header)`
 const StyledCardSubtitle = styled(Card.Subtitle)`
     background-color:white;
     border-width:0px;
-
 `
 
 const StyledRow = styled(Row)`
@@ -179,7 +178,6 @@ const StyledLink = styled(Link)`
 `
 
 const StyledCard = styled(Card)`
-
     display: block;
     top: 0px;
     position: relative;
