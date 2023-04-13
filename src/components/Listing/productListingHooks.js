@@ -127,13 +127,58 @@ const useProductListingHooks = () => {
     setShowErrorWarning(!showErrorWarning);
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchPrompts, setSearchPrompts] = useState("");
+  const [showSearchPrompts, setShowSearchPrompts] = useState(true);
+
+  const searchByProductName = (e) => {
+    setShowSearchPrompts(true);
+
+    var query = e.target.value;
+    setSearchQuery(query);
+    var queryNormalized = e.target.value.toLowerCase();
+    var queryLen = queryNormalized.length;
+
+    var displaySearchData = data.filter(
+      (d) => d.name.toLowerCase().substring(0, queryLen) == queryNormalized
+    );
+    var displaySearchDataNames = displaySearchData.map((data) => data.name);
+
+    if (queryNormalized != "") {
+      setSearchPrompts(displaySearchDataNames);
+    } else {
+      setSearchPrompts("");
+    }
+  };
+
+  const handleSearchQuery = (e) => {
+    setSearchQuery(e);
+    setShowSearchPrompts(false);
+  };
+
+  const performSearch = () => {
+    setShowSearchPrompts(false);
+
+    if (searchQuery != "") {
+      var queryNormalized = searchQuery.toLowerCase();
+      var queryLen = queryNormalized.length;
+      var displaySearchData = data.filter(
+        (data) =>
+          data.name.toLowerCase().substring(0, queryLen) == queryNormalized
+      );
+      setData(displaySearchData);
+    } else {
+      setData(displayData);
+    }
+  };
+
   useEffect(() => {
     setProductName("");
     setProductPrice("");
     setProductDescription("");
     setSelectedFiles([]);
     setEditFile("");
-    setProductCategory("CRAFT");
+    setProductCategory("CRAFTS");
     setValidated(false);
     setShowImageUploadError(false);
     if (user != null) {
@@ -181,9 +226,9 @@ const useProductListingHooks = () => {
             price: productPrice,
             description: productDescription,
             imageLink: imageBase64s,
-            category: productCategory == "" ? "CRAFT" : productCategory,
-            numRatings:0,
-            ratingScore:0
+            category: productCategory == "" ? "CRAFTS" : productCategory,
+            numRatings: 0,
+            ratingScore: 0,
           },
         };
 
@@ -322,6 +367,12 @@ const useProductListingHooks = () => {
     serverError,
     showErrorWarning,
     handleShowErrorWarning,
+    searchQuery,
+    searchByProductName,
+    searchPrompts,
+    showSearchPrompts,
+    handleSearchQuery,
+    performSearch,
   };
 };
 

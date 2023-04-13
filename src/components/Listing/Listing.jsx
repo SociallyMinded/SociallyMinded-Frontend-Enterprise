@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { PageTemplate } from "../common/styles";
 import { UserAuth } from "../../context/AuthContext";
+import { SearchInput } from "./SearchInput";
+import { PromptResults } from "./PromptResults";
 import LoggedInHeader from "../common/Header/LoggedInHeader";
 import Header from "../common/Header/Header";
 import React from "react";
@@ -62,6 +64,12 @@ const Listing = () => {
     serverError,
     showErrorWarning,
     handleShowErrorWarning,
+    searchQuery,
+    searchByProductName,
+    searchPrompts,
+    showSearchPrompts,
+    handleSearchQuery,
+    performSearch,
   } = useProductListingHooks();
 
   return (
@@ -69,14 +77,20 @@ const Listing = () => {
       {user == null ? <Header></Header> : <LoggedInHeader></LoggedInHeader>}
       <ProductListingHeaderContainer>
         <Subheader>Products</Subheader>
-        <SearchBox>
-          <FaSearch />
-          <input
-            type="text"
-            className="form-control ml-2"
-            placeholder="Search"
-          />
-        </SearchBox>
+        <SearchInput
+          data={{
+            searchByProductName: searchByProductName,
+            searchQuery: searchQuery,
+            performSearch: performSearch,
+          }}
+        />
+        <PromptResults
+          data={{
+            showSearchPrompts: showSearchPrompts,
+            searchPrompts: searchPrompts,
+            handleSearchQuery: handleSearchQuery,
+          }}
+        />
         <AddButton onClick={handleShowAddProductModal}>Add</AddButton>
       </ProductListingHeaderContainer>
       {showErrorWarning && (
@@ -573,6 +587,7 @@ const ProductListingHeaderContainer = styled.div`
   flex-direction: row;
   margin-top: 3vh;
   width: 100%;
+  max-height: 30vh;
   border-bottom: 1px solid #7a7a7a;
   padding-bottom: 2vh;
 `;
