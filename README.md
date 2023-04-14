@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# SociallyMinded-Frontend-Enterprise
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Demo Video
+[insert demo video]
 
-## Available Scripts
+## Frontend Tech Stack
+<img width="616" alt="Screenshot 2023-04-14 at 2 47 02 PM" src="https://user-images.githubusercontent.com/97529863/231965201-9746f258-17b1-4e63-b5fa-b8f3511dfc97.png">
 
-In the project directory, you can run:
+## Frontend Architecture
+Component based architecture
+- Common components (under common folder) : components that can be shared across different pages (ie Button, Headers)
+- Page components (under respective page folder) : components that leverages on smaller sub-components to render a page (ie ShopPage)
 
-### `npm start`
+Modularity 
+- As far as possible, page components are split into smaller components so that the code is more modular and reusable (ie ShopPage is comprised of a SearchInput component, a PromptResults component, as well as a DataDisplay component)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Separation of Controller and View functions
+- Controller : files (.js) containing hooks (useState, useEffect) to help perform data fetching (via axios), and CRUD operations
+- View : files (.jsx) containing modular components that uses methods from controller (hooks) to determine data rendering logic 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+React Hooks used
+- useState : allow components to store state 
+- useEffect : perform operations with side effects (ie data fetching)
+- useMemo : cache the result of a expensive calculations between re-renders (ie sorting of data)
 
-### `npm test`
+Other React packages used 
+- React Router : handle client and server-side routing in React applications
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Key features
+Authentication 
+- Sign up for a new account
+- Log in to account
+- Log in / sign up via an existing gmail account
+- Log out
+- Reset password
 
-### `npm run build`
+Listings
+- View all products currently sold
+- View details of a product (ie price, customer ratings and reviews)
+- Search for product by name
+- Add a new product
+- Update product details
+- Delete a product (if product does not have any orders or all associated orders have been completed)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Shopfront
+- View and manage all order records
+- Search order records by Id
+- Filter order records by order status
+- Export order records as a CSV file 
+- Update order statueses
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Dashboard
+- View analytics of sales and order records for each month (default is set to current month)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
