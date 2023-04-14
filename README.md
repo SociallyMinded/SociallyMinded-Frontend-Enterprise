@@ -1,6 +1,6 @@
 # SociallyMinded-Frontend-Enterprise
 
-This repository contains code for the frontend social enterprise portal
+<img width="1348" alt="Screenshot 2023-04-14 at 3 52 57 PM" src="https://user-images.githubusercontent.com/97529863/231980612-8b521b1c-06a2-46ab-985b-1079b7e83a0e.png">
 
 ## Demo Video
 [insert demo video]
