@@ -1,5 +1,7 @@
 # SociallyMinded-Frontend-Enterprise
 
+This repository contains code for the frontend social enterprise portal
+
 ## Demo Video
 [insert demo video]
 
