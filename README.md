@@ -2,9 +2,6 @@
 
 <img width="1348" alt="Screenshot 2023-04-14 at 3 52 57 PM" src="https://user-images.githubusercontent.com/97529863/231980612-8b521b1c-06a2-46ab-985b-1079b7e83a0e.png">
 
-## Demo Video
-[insert demo video]
-
 ## Installation guide
 
 1. Clone this repo
@@ -13,7 +10,7 @@
 
 3. After running `npm i`, run npm start 
 
-## Frontend Tech Stack
+## Tech Stack
 <img width="616" alt="Screenshot 2023-04-14 at 2 47 02 PM" src="https://user-images.githubusercontent.com/97529863/231965201-9746f258-17b1-4e63-b5fa-b8f3511dfc97.png">
 
 ## Frontend Architecture
